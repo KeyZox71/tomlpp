@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Nix related
+.direnv
+
+# clangd files
+compile_commands.json

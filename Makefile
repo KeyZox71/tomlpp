@@ -6,7 +6,7 @@
 #    By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 16:09:27 by adjoly            #+#    #+#              #
-#    Updated: 2025/01/24 14:19:08 by adjoly           ###   ########.fr        #
+#    Updated: 2025/01/25 12:16:28 by adjoly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ SHELL = bash
 NAME = tomlpp.so
 
 CC = c++
+
+INCLUDES = includes/
 
 OBJSDIR = obj/
 
@@ -46,7 +48,7 @@ $(NAME): $(OBJS)
 
 $(OBJSDIR)%.o: %.cpp
 	@mkdir -p $(@D)
-	@$(CC) $(CXXFLAGS) -I . -c $< -o $@
+	@$(CC) -I $(INCLUDES) $(CXXFLAGS) -c $< -o $@
 	@printf "$(DELETE)$(GREEN)「🔨」 build($<): object compiled\n"
 
 clean:

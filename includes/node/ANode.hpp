@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/27 21:07:20 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:12:21 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 #include <map>
 #include <string>
-#include <vector>
 #include <sys/types.h>
+#include <vector>
+
+namespace toml {
 
 class Table;
 class Array;
@@ -23,7 +25,7 @@ template <typename type> class Value;
 
 typedef enum {
 	EMPTY = -1, // ""
-	TABLE,		// [table]
+	TABLE,		// [table] || {asdf =f, fdfd = d}
 	ARRAY,		// [ "", "" ]
 	BOOL,		// true / false
 	STRING,		// "wtf"
@@ -44,3 +46,5 @@ class ANode {
 	//		is func
 	virtual valueType_t type(void) const { return EMPTY; }
 };
+
+} // namespace toml

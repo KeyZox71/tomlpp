@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/27 21:40:34 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/01/28 18:41:21 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "ANode.hpp"
 #include "vector"
 #include <vector>
+
+namespace toml {
 
 class Array : public ANode {
   public:
@@ -32,3 +34,5 @@ class Array : public ANode {
 
 	const valueType_t _type;
 };
+
+}

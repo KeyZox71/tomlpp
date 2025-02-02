@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/28 11:34:18 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/01/28 20:31:57 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <sys/types.h>
 #include <typeinfo>
 
+namespace toml {
+
 template <typename valueType> class Value : public ANode {
   public:
 	Value(valueType);
@@ -26,11 +28,6 @@ template <typename valueType> class Value : public ANode {
 	std::string *getString(void);
 	int16_t		*getInt(void);
 	double		*getFloat(void);
-
-	bool isBool(void) const;
-	bool isString(void) const;
-	bool isInt(void) const;
-	bool isFloat(void) const;
 
 	valueType_t type(void) const;
 
@@ -43,7 +40,7 @@ template <typename valueType> class Value : public ANode {
 
 template <typename valueType>
 Value<valueType>::Value(valueType val) : _val(&val) {
-	log("➕", "tomlValue", "", "constructor called");
+	log("tomlValue", "", "constructor called");
 	if (typeid(valueType) == typeid(bool))
 		_type = BOOL;
 	else if (typeid(valueType) == typeid(std::string))
@@ -57,7 +54,7 @@ Value<valueType>::Value(valueType val) : _val(&val) {
 }
 
 template <typename valueType> Value<valueType>::~Value(void) {
-	log("➕", "tomlValue", "", "destructor called");
+	log("tomlValue", "", "destructor called");
 	delete _val;
 }
 
@@ -92,3 +89,5 @@ template <typename valueType> double *Value<valueType>::getFloat(void) {
 template <typename valueType> valueType_t Value<valueType>::type(void) const {
 	return _type;
 }
+
+} // namespace toml

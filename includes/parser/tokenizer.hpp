@@ -1,36 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Table.hpp                                          :+:      :+:    :+:   */
+/*   tokenizer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/28 18:41:44 by adjoly           ###   ########.fr       */
+/*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
+/*   Updated: 2025/01/31 13:54:32 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "ANode.hpp"
-#include <map>
+#include "node/ANode.hpp"
+#include <cstddef>
+#include <fstream>
+#include <string>
 
 namespace toml {
+namespace tokenizer {
 
-class Table : public ANode {
+typedef struct {
+	valueType_t kind;
+	std::string token;
+} token_t;
+
+typedef enum {
+	NL,
+	KEY,
+	EQUAL,
+	TABLE,
+	ARRAYTABLE,
+	VALUE,
+} tokenKind_t;
+
+class Tokenizer {
   public:
-	Table(void);
-	~Table(void);
+	Tokenizer(std::string fileName);
+	~Tokenizer(void);
 
-	std::map<std::string, ANode> *getTable(void) { return _map; }
-	bool						  isTable(void) const { return true; }
-	valueType_t					  type(void) const { return _type; }
+	std::string getNextToken(void);
 
   protected:
   private:
-	std::map<std::string, ANode> *_map;
-
-	const valueType_t _type;
+	std::string _file;
+	size_t		_fileIndex;
 };
 
+} // namespace tokenizer
 } // namespace toml

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/02 13:48:14 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/03 19:15:15 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ std::string Tokenizer::getNextToken(void) {
 		if (_file[_fileIndex] == '\n' || _file[_fileIndex] == '=')
 			return _file.substr(_fileIndex++, 1);
 		else if (_file[_fileIndex] == '[')
-			return getKeyString(_file.substr(_fileIndex), _fileIndex);
+			return getTableString(_file, _fileIndex);
 		else if (isalnum(_file[_fileIndex]))
-			return getStr(_file.substr(_fileIndex), _fileIndex);
+			return getStr(_file, _fileIndex);
 		else if (_file[_fileIndex] == '"' || _file[_fileIndex] == '\'')
-			return getQuotedString(_file.substr(_fileIndex), _fileIndex);
+			return getQuotedString(_file, _fileIndex);
 		_fileIndex++;
 	}
 	return token;

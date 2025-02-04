@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 14:13:44 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/03 19:52:52 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/04 12:41:53 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool checkForDoubleBracket(std::string str, size_t &index, char bracketType) {
 		return false;
 }
 
-std::string getStr(std::string &_file, size_t &index) {
+std::string getStr(std::string _file, size_t &index) {
 	size_t start = index;
 
 	while (_file[index] && !isspace(_file[index])) {

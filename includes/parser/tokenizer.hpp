@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/31 13:54:32 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/04 12:59:09 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
+#include "utils.hpp"
 
 namespace toml {
 namespace tokenizer {

@@ -21,6 +21,7 @@
 					buildInputs = with pkgs;[
 
 					];
+					LD_LIBRARY_PATH=".";
 					hardeningDisable = [ "all" ];
 					packages = with pkgs; [
 						gcc11

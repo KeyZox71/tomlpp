@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/03 19:15:15 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/04 12:42:14 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
-std::string	getStr(std::string &_file, size_t _fileIndex);
 
 using namespace toml;
 using namespace tokenizer;

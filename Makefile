@@ -6,7 +6,7 @@
 #    By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 16:09:27 by adjoly            #+#    #+#              #
-#    Updated: 2025/01/25 12:16:28 by adjoly           ###   ########.fr        #
+#    Updated: 2025/02/04 13:32:43 by adjoly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,13 @@ INCLUDES = includes/
 
 OBJSDIR = obj/
 
-SRCS = $(shell find . -name '*.cpp')
+SRCS = $(shell find src -name '*.cpp')
 
 OBJS = $(addprefix $(OBJSDIR), $(SRCS:.cpp=.o))
 
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -MMD -MP
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -MMD -MP -fPIC
 
-LDFLAGS = 
+LDFLAGS = -lc -fPIC
 
 RED = \033[0;31m
 GREEN = \033[0;32m
@@ -43,7 +43,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@printf "$(YELLOW)「✨」 feat($(NAME)): linking $(NAME)\n"
-	@$(CC) -shared -o $(NAME) $(OBJS) $(LDFLAGS)
+	@$(CC) -shared -o $(NAME) $(LDFLAGS) $(OBJS)
 	@printf "$(YELLOW)「✨」 feat($(NAME)): $(NAME) compiled ! :D\n"
 
 $(OBJSDIR)%.o: %.cpp

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/28 18:41:21 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:18:08 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace toml {
 
 class Array : public ANode {
   public:
-	Array(void);
+	Array(std::vector<ANode>);
 	~Array(void);
 
 	std::vector<ANode> *getArray(void) { return _vec; }

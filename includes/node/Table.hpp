@@ -6,20 +6,21 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/10 15:18:05 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/10 16:22:17 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "ANode.hpp"
+#include "Log.hpp"
 #include <map>
 
 namespace toml {
 
 class Table : public ANode {
   public:
-	Table(const std::map<std::string, ANode>);
+	Table(std::map<std::string, ANode>);
 	~Table(void);
 
 	std::map<std::string, ANode> *getTable(void) { return _map; }
@@ -32,5 +33,14 @@ class Table : public ANode {
 
 	const valueType_t _type;
 };
+
+Table::Table(std::map<std::string, ANode> map) : _type(TABLE) {
+	log("tomlTable", "", "constructor called");
+	_map = &map;
+}
+
+Table::~Table(void) {
+	log("tomlTable", "", "destructor called");
+}
 
 } // namespace toml

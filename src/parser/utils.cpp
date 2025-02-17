@@ -6,11 +6,12 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 14:13:44 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/04 12:41:53 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/15 15:25:36 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/utils.hpp"
+#include <stdexcept>
 #include <string>
 
 bool checkForTripleQuote(std::string str, size_t &index) {
@@ -64,18 +65,18 @@ std::string getQuotedString(std::string _file, size_t &index) {
 		if (multiLine && checkForTripleQuote(_file, index) &&
 			doubleQuote == checkDoubleQ(_file[index])) {
 			index += 3;
-			break;
+			return _file.substr(start, index - start);
 		} else if (!multiLine && doubleQuote == checkDoubleQ(_file[index]) &&
 				   (_file[index] == '\'' || _file[index] == '"')) {
 			index++;
-			break;
+			return _file.substr(start, index - start);
 		} else if (!multiLine && _file[index] == '\n') {
 			index++;
-			break;
+			throw std::runtime_error("Quote not closed");
 		}
 		index++;
 	}
-	return _file.substr(start, index - start);
+	throw std::runtime_error("Quote not closed");
 }
 
 std::string getTableString(std::string _file, size_t &index) {

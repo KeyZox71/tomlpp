@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/01/31 11:12:21 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/14 17:25:31 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef enum {
 	BOOL,		// true / false
 	STRING,		// "wtf"
 	INT,		// "1" / "0x3"
-	FLOAT		// "0.4" / "-inf"
 } valueType_t;
 
 class ANode {
@@ -41,7 +40,6 @@ class ANode {
 	virtual bool						 *getBool(void) { return NULL; }
 	virtual std::string					 *getString(void) { return NULL; }
 	virtual int16_t						 *getInt(void) { return NULL; }
-	virtual double						 *getFloat(void) { return NULL; }
 
 	//		is func
 	virtual valueType_t type(void) const { return EMPTY; }

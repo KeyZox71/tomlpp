@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/10 15:17:59 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/14 17:26:26 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ template <typename valueType> class Value : public ANode {
 	bool		*getBool(void);
 	std::string *getString(void);
 	int16_t		*getInt(void);
-	double		*getFloat(void);
 
 	valueType_t type(void) const;
 
@@ -47,8 +46,6 @@ Value<valueType>::Value(valueType val) : _val(&val) {
 		_type = STRING;
 	else if (typeid(valueType) == typeid(int16_t))
 		_type = INT;
-	else if (typeid(valueType) == typeid(double))
-		_type = FLOAT;
 	else
 		_type = EMPTY;
 }
@@ -74,13 +71,6 @@ template <typename valueType> std::string *Value<valueType>::getString(void) {
 
 template <typename valueType> int16_t *Value<valueType>::getInt(void) {
 	if (typeid(valueType) == typeid(int16_t))
-		return _val;
-	else
-		return NULL;
-}
-
-template <typename valueType> double *Value<valueType>::getFloat(void) {
-	if (typeid(valueType) == typeid(double))
 		return _val;
 	else
 		return NULL;

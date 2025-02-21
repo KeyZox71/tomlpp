@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 14:32:45 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 07:37:19 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:12:42 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ std::string getTableString(std::string, size_t &);
 
 namespace parser {
 
-toml::Table				 convertTable(tokenizer::Tokenizer);
+//toml::Table				 convertTable(tokenizer::Tokenizer);
 toml::Value<bool>		 convertBool(std::string);
 toml::Value<std::string> convertString(std::string);
 toml::Value<int16_t>	 convertInt(std::string);

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:16:43 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 07:41:55 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:04:08 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,25 @@ toml::Table convertTable(tokenizer::Tokenizer tokenizer) {
 	std::map<std::string, ANode>	map;
 
 	while (!token.empty() || isTable(token)) {
+		
+		token = tokenizer.getNextToken();
 	}
 	return toml::Table(map);
+}
+
+ANode convertValue(std::string token) {
+	if (isBool(token))
+		return convertBool(token);
+	else if (isInt(token))
+		return convertInt(token);
+	else if (isString(token))
+		return convertString(token);
+	else if (token[0] == '\n')
+		throw(std::runtime_error("Please specify a value after ="));
+	else if (token[0] == '=')
+		throw(std::runtime_error("= present after ="));
+	else
+		throw(std::runtime_error("No value present")); 
 }
 
 bool isBool(std::string token) {

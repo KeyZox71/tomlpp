@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 09:09:00 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:15:14 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ template <typename valueType> class Value : public ANode {
 	Value(valueType);
 	~Value(void);
 
-	bool		*getBool(void);
-	std::string	*getString(void);
-	int16_t		*getInt(void);
+	void *getValue(void);
 
 	valueType_t type(void) const;
 
@@ -55,25 +53,11 @@ template <typename valueType> Value<valueType>::~Value(void) {
 	delete _val;
 }
 
-template <typename valueType> bool *Value<valueType>::getBool(void) {
-	if (IsSame<valueType, bool>::value)
-		return _val;
+template <typename valueType> void	*Value<valueType>::getValue(void) {
+	if (_type == EMPTY)
+		return not_nullptr;
 	else
-		return __nullptr;
-}
-
-template <typename valueType> std::string *Value<valueType>::getString(void) {
-	if (IsSame<valueType, std::string>::value)
 		return _val;
-	else
-		return ;
-}
-
-template <typename valueType> int16_t *Value<valueType>::getInt(void) {
-	if (IsSame<valueType, int16_t>::value)
-		return _val;
-	else
-		return NULL;
 }
 
 template <typename valueType> valueType_t Value<valueType>::type(void) const {

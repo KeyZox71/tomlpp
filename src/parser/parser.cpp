@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:45:45 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/15 16:12:21 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:04:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ parse::parse(std::string name) : _tokenizer(name) {
 
 parse::~parse(void) { log("tomlParser", "", "destructor called"); }
 
-ANode parse::_convertValue(std::string token) {
+ANode convertValue(std::string token) {
 	if (isBool(token))
 		return convertBool(token);
 	else if (isInt(token))

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/15 15:25:10 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/21 07:44:54 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,14 @@ std::string Tokenizer::getNextToken(void) {
 	} catch (std::runtime_error e) {
 		log("Error", "tokenizer", e.what());
 	}
+	_lastToken = token;
 	return token;
+}
+
+std::string	Tokenizer::getLastToken(void) {
+	if (_lastToken.empty()) {
+
+	}
 }
 
 Tokenizer::~Tokenizer(void) {}

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 08:19:14 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 09:23:25 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:53:28 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #pragma once
 
 #if __cplusplus == 199711L
+
+#undef nullptr
 
 /**
  *	@brief	IsSame in cpp98 ;D
@@ -32,14 +34,20 @@ template <typename T> struct IsSame<T, T> {
 /**
  * @brief Emulating nullptr for C++98
  */
-const class {
-  public:
-	template <class T> operator T *() const { return 0; }
+struct nullptr_t {
+	template <typename T> operator T *() const { return 0; }
 
-	template <class C, class T> operator T C::*() const { return 0; }
+	template <typename C, typename T> operator T C::*() const { return 0; }
 
   private:
+	// Prevent taking the address of nullptr
 	void operator&() const;
-} nullptr = {};
+};
+
+const nullptr_t not_nullptr = {};
+#undef auto
+
+#define nullptr not_nullptr
+#define auto __auto_type
 
 #endif

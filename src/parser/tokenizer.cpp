@@ -6,74 +6,90 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 18:14:01 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/24 18:13:07 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/tokenizer.hpp"
-#include "Log.hpp"
-#include "parser/utils.hpp"
-#include <bits/types/error_t.h>
 #include <cctype>
-#include <cstddef>
-#include <cwctype>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <Log.hpp>
 
 using namespace toml;
 using namespace tokenizer;
 
-Tokenizer::Tokenizer(std::string fileName) : _fileIndex(0) {
-	std::ifstream fileStream;
-	try {
-		fileStream.open(fileName.c_str());
+void tokenizerError(std::string e) {
+	throw std::runtime_error("Token error - " + e);
+}
 
-		if (!fileStream.is_open()) {
-			throw fileName;
+token Tokenizer::next(void) {
+	while (_index < _input.size()) {
+		char c = _input[_index];
+		_index++;
+
+		if (std::isspace(c))
+			continue;
+
+		if (c == '#' && _index < _input.size() && _input[_index] != '\n') {
+			size_t commentEnd = _input.find('\n', _index);
+			if (commentEnd != _input.npos) {
+				_index = commentEnd + 1;
+			} else {
+				_index = _input.size();
+			}
+			continue;
 		}
-	} catch (std::string fileName) {
-		logWarning("tomlpp", "File open", "error opening " + fileName);
-		return;
-	}
 
-	std::stringstream ss;
-
-	ss << fileStream.rdbuf();
-	_file = ss.str();
-	fileStream.close();
-}
-
-std::string Tokenizer::getNextToken(void) {
-	std::string token;
-
-	try {
-		while (_fileIndex < _file.length()) {
-			if (_file[_fileIndex] == '\n' || _file[_fileIndex] == '=')
-				return _file.substr(_fileIndex++, 1);
-			else if (_file[_fileIndex] == '[')
-				return getTableString(_file, _fileIndex);
-			else if (isalnum(_file[_fileIndex]))
-				return getStr(_file, _fileIndex);
-			else if (_file[_fileIndex] == '"' || _file[_fileIndex] == '\'')
-				return getQuotedString(_file, _fileIndex);
-			_fileIndex++;
+		if (std::isdigit(c)) {
+			size_t nbStart = _index;
+			while (_index < _input.size() && isdigit(_input[_index])) {
+				_index++;
+			}
+			return (token){_input.substr(nbStart, _index - nbStart), NUMBER};
 		}
-	} catch (std::runtime_error e) {
-		log("Error", "tokenizer", e.what());
-		throw ;
+
+		if (c == '"') {
+			size_t strStart = _index;
+			bool   escape = false;
+			while (_index < _input.size() && _input[_index] != '"' &&
+				   _input[_index] != '\n') {
+				if (_input[_index] == '"' && !escape) {
+					_index++;
+					return (token){_input.substr(strStart, _index - strStart - 1), STRING};
+				}
+				escape = !escape && _input[_index] == '\\';
+				_index++;
+			}
+			tokenizerError("unexpected token in string : " + std::string(_input[_index], 1));
+		}
+
+		if (isalpha(c)) {
+			size_t	keyStart = _index;
+			while (_index < _input.size() && isgraph(_input[_index])) {
+				_index++;
+			}
+			std::string endValue = _input.substr(keyStart, _index - keyStart);
+			if (endValue == "true" || endValue == "false") {
+				return (token){endValue, BOOL};
+			}
+			return (token){endValue, KEY};
+		}
+
+		switch (c) {
+		case '{':
+			return (token){"", TABLE_START};
+		case '}':
+			return (token){"", TABLE_END};
+		case '[':
+			return (token){"", ARRAY_START};
+		case ']':
+			return (token){"", ARRAY_END};
+		case '=':
+			return (token){"", ASSIGNMENT_OPERATOR};
+		case '\n':
+			return (token){"", NEWLINE};
+		default:
+			tokenizerError("unexpected token : " + std::string(1, c));
+		}
 	}
-	_lastToken = token;
-	return token;
 }
-
-std::string	Tokenizer::getLastToken(void) {
-	if (_lastToken.empty()) {
-
-	}
-}
-
-Tokenizer::~Tokenizer(void) {}

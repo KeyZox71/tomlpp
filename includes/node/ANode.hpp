@@ -6,12 +6,13 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 18:15:33 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:21:18 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include "parser/tokenizer.hpp"
 #include <cppeleven.hpp>
 #include <map>
 #include <string>
@@ -24,15 +25,6 @@ class Table;
 class Array;
 template <typename type> class Value;
 
-typedef enum {
-	EMPTY = -1, // ""
-	TABLE,		// [table] || {asdf =f, fdfd = d}
-	ARRAY,		// [ "", "" ]
-	BOOL,		// true / false
-	STRING,		// "wtf"
-	INT,		// "1" / "0x3"
-} valueType_t;
-
 class ANode {
   public:
 	//		return func
@@ -41,7 +33,7 @@ class ANode {
 	virtual void						 *getValue(void) { return not_nullptr; }
 
 	//		is func
-	virtual valueType_t type(void) const { return EMPTY; }
+	virtual tokenizer::tokenType type(void) const { return tokenizer::END; }
 };
 
 } // namespace toml

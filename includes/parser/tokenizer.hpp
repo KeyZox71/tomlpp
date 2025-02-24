@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 07:41:53 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/24 19:21:42 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,43 +17,55 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
-#include "utils.hpp"
 
 namespace toml {
 namespace tokenizer {
 
-typedef enum {
-	NL,
+enum tokenType {
 	KEY,
-	EQUAL,
-	TABLE,
-	ARRAYTABLE,
 	VALUE,
-} tokenKind_t;
+	TABLE_START,
+	TABLE_END,
+	ARRAY_START,
+	ARRAY_END,
+	ASSIGNMENT_OPERATOR,
+	STRING,
+	NUMBER,
+	BOOL,
+	NEWLINE,
+	COMMA,
+	END
+};
+
+struct token {
+	std::string token;
+	tokenType	type;
+};
 
 class Tokenizer {
   public:
-	Tokenizer(std::string fileName);
+	Tokenizer(std::string &input)
+		: _input(input), _index(0), _currentToken((token){"", END}) {}
 	~Tokenizer(void);
 
 	/**
 	 *	@brief	Returns the next token in line in the toml file
 	 *
-	 *	@return	A string containing the newly read token
+	 *	@return	A struct containing the string of the token(which can be empty) and it's type
 	 */
-	std::string getNextToken(void);
+	token next(void);
 	/**
-	 *	@brief	Returns the last read token
+	 *	@brief	Returns the read token
 	 *
-	 *	@return	A string container the last read token
+	 *	@return	A string that contains the read token
 	 */
-	std::string	getLastToken(void);
+	std::string peek(void);
 
   protected:
   private:
-	std::string _file;
-	size_t		_fileIndex;
-	std::string _lastToken;
+	std::string _input;
+	size_t		_index;
+	token		_currentToken;
 };
 
 } // namespace tokenizer

@@ -6,13 +6,13 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/24 19:21:42 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/25 11:43:08 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "node/ANode.hpp"
+#include "cppeleven.hpp"
 #include "node/Table.hpp"
 #include <cstddef>
 #include <fstream>
@@ -34,7 +34,8 @@ enum tokenType {
 	BOOL,
 	NEWLINE,
 	COMMA,
-	END
+	END,
+	ERR
 };
 
 struct token {
@@ -45,21 +46,21 @@ struct token {
 class Tokenizer {
   public:
 	Tokenizer(std::string &input)
-		: _input(input), _index(0), _currentToken((token){"", END}) {}
-	~Tokenizer(void);
+		: _input(input), _index(0), _currentToken((token){"", ERR}) {}
+	~Tokenizer(void){}
 
 	/**
 	 *	@brief	Returns the next token in line in the toml file
 	 *
 	 *	@return	A struct containing the string of the token(which can be empty) and it's type
 	 */
-	token next(void);
+	void	next(void);
 	/**
 	 *	@brief	Returns the read token
 	 *
-	 *	@return	A string that contains the read token
+	 *	@return	The a struct with a string and the type of the read token
 	 */
-	std::string peek(void);
+	token	*peek(void);
 
   protected:
   private:

@@ -6,11 +6,12 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/24 18:13:07 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/25 13:19:21 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/tokenizer.hpp"
+#include "cppeleven.hpp"
 #include <cctype>
 #include <stdexcept>
 #include <string>
@@ -22,12 +23,12 @@ void tokenizerError(std::string e) {
 	throw std::runtime_error("Token error - " + e);
 }
 
-token Tokenizer::next(void) {
+void Tokenizer::next(void) {
 	while (_index < _input.size()) {
 		char c = _input[_index];
 		_index++;
 
-		if (std::isspace(c))
+		if (std::isspace(c) && c != '\n')
 			continue;
 
 		if (c == '#' && _index < _input.size() && _input[_index] != '\n') {
@@ -45,7 +46,9 @@ token Tokenizer::next(void) {
 			while (_index < _input.size() && isdigit(_input[_index])) {
 				_index++;
 			}
-			return (token){_input.substr(nbStart, _index - nbStart), NUMBER};
+			_currentToken = (token){
+				_input.substr(nbStart - 1, _index - nbStart + 1), NUMBER};
+			return;
 		}
 
 		if (c == '"') {
@@ -53,43 +56,62 @@ token Tokenizer::next(void) {
 			bool   escape = false;
 			while (_index < _input.size() && _input[_index] != '"' &&
 				   _input[_index] != '\n') {
-				if (_input[_index] == '"' && !escape) {
-					_index++;
-					return (token){_input.substr(strStart, _index - strStart - 1), STRING};
-				}
 				escape = !escape && _input[_index] == '\\';
 				_index++;
 			}
-			tokenizerError("unexpected token in string : " + std::string(_input[_index], 1));
+			if (_index == _input.size())
+				tokenizerError("unexpected token in string : " +
+							   std::string(_input[_index], 1));
+			_index++;
+			_currentToken =
+				(token){_input.substr(strStart, _index - strStart - 1), STRING};
+			return;
 		}
 
 		if (isalpha(c)) {
-			size_t	keyStart = _index;
-			while (_index < _input.size() && isgraph(_input[_index])) {
+			size_t keyStart = _index - 1;
+			while (_index < _input.size() && isalpha(_input[_index])) {
 				_index++;
 			}
 			std::string endValue = _input.substr(keyStart, _index - keyStart);
 			if (endValue == "true" || endValue == "false") {
-				return (token){endValue, BOOL};
+				_currentToken = (token){endValue, BOOL};
+				return;
 			}
-			return (token){endValue, KEY};
+			_currentToken = (token){endValue, KEY};
+			return;
 		}
 
 		switch (c) {
 		case '{':
-			return (token){"", TABLE_START};
+			_currentToken = (token){"{", TABLE_START};
+			return;
 		case '}':
-			return (token){"", TABLE_END};
+			_currentToken = (token){"}", TABLE_END};
+			return;
 		case '[':
-			return (token){"", ARRAY_START};
+			_currentToken = (token){"[", ARRAY_START};
+			return;
 		case ']':
-			return (token){"", ARRAY_END};
+			_currentToken = (token){"]", ARRAY_END};
+			return;
 		case '=':
-			return (token){"", ASSIGNMENT_OPERATOR};
+			_currentToken = (token){"=", ASSIGNMENT_OPERATOR};
+			return;
 		case '\n':
-			return (token){"", NEWLINE};
+			_currentToken = (token){"NEW", NEWLINE};
+			return;
 		default:
-			tokenizerError("unexpected token : " + std::string(1, c));
+			tokenizerError("unrecognized token : " + std::string(1, c));
 		}
 	}
+	_currentToken = (token){"", END};
+	return;
+}
+
+token *Tokenizer::peek(void) {
+	if (_currentToken.type != ERR && _currentToken.type != END) {
+		return &_currentToken;
+	}
+	return not_nullptr;
 }

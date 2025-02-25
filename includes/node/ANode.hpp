@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/24 13:21:18 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/25 11:21:06 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 
 namespace toml {
 
+enum nodeType { TABLE, ARRAY, VALUE, NONE };
+
 class Table;
 class Array;
 template <typename type> class Value;
@@ -33,7 +35,9 @@ class ANode {
 	virtual void						 *getValue(void) { return not_nullptr; }
 
 	//		is func
-	virtual tokenizer::tokenType type(void) const { return tokenizer::END; }
+	virtual nodeType type(void) const {
+		return NONE;
+	}
 };
 
 } // namespace toml

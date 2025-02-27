@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 10:56:43 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:30:28 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ struct token {
 class Tokenizer {
   public:
 	Tokenizer(std::string &input)
-		: _input(input), _index(0), _currentToken((token){"", ERR}) {}
+		: _input(input), _index(0), _currentToken((token){"", ERR}) { log("toml", "tokenizer", "constructor called");}
 	~Tokenizer(void) {}
 
 	/**

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 11:07:16 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:11:07 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,39 @@ class Table;
 class Array;
 template <typename type> class Value;
 
+/**
+ *	@brief	An abstract class from which depends all other type (table, array
+ *			and value)
+ */
 class ANode {
   public:
-	//		return func
+	/**
+	 *	@brief	Can be used to get the stored table (in this case return
+	 *			nullptr)
+	 *
+	 *	@return Pointer to the stored table
+	 */
 	virtual std::map<std::string, ANode> *getTable(void) { return not_nullptr; }
-	virtual std::vector<ANode>			 *getArray(void) { return not_nullptr; }
-	virtual void						 *getValue(void) { return not_nullptr; }
+	/**
+	 *	@brief	Can be used to get the stored array (in this case return
+	 *			nullptr)
+	 *
+	 *	@return	Pointer to the stored array
+	 */
+	virtual std::vector<ANode> *getArray(void) { return not_nullptr; }
+	/**
+	 *	@brief	Can be used to get the stored value (in this case return
+	 *			nullptr)
+	 *
+	 *	@return	Pointer to the stored value
+	 */
+	virtual void *getValue(void) { return not_nullptr; }
 
-	//		is func
+	/**
+	 *	@brief	Can be used to get the type of the store value/table/array
+	 *
+	 *	@return	Type of the store value/table/array
+	 */
 	virtual nodeType type(void) const { return NONE; }
 };
 

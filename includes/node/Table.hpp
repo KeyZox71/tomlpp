@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/25 11:20:42 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:15:52 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,36 @@
 
 namespace toml {
 
+/**
+ *	@brief	Class for toml table
+ *
+ *	Stored a map the key is a string and the value is a ANode (which can be of
+ *	any type possible in toml)
+ */
 class Table : public ANode {
   public:
-	Table(std::map<std::string, ANode>);
-	~Table(void);
+	Table(std::map<std::string, ANode> map) {
+		log("toml", "table", "constructor called");
+		_map = &map;
+	}
+	~Table(void) { log("toml", "table", "destructor called"); }
 
+	/**
+	 *	@brief	Can be used to get the table stored
+	 *
+	 *	@return	A pointer to a map containing the stored table
+	 */
 	std::map<std::string, ANode> *getTable(void) { return _map; }
-	bool						  isTable(void) const { return true; }
-	nodeType					  type(void) const { return _type; }
+	/**
+	 *	@brief	Can be used to get type (always returns TABLE)
+	 *
+	 *	@return Always returns TABLE
+	 */
+	nodeType type(void) const { return TABLE; }
 
   protected:
   private:
-	std::map<std::string, ANode> *_map;
-
-	const nodeType _type;
+	std::map<std::string, ANode> *_map; ///< Map of the stored table
 };
-
-Table::Table(std::map<std::string, ANode> map) : _type(TABLE) {
-	log("tomlTable", "", "constructor called");
-	_map = &map;
-}
-
-Table::~Table(void) { log("tomlTable", "", "destructor called"); }
 
 } // namespace toml

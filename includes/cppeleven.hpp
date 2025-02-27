@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 08:19:14 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 17:53:28 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/26 15:53:41 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ struct nullptr_t {
 };
 
 const nullptr_t not_nullptr = {};
-#undef auto
 
 #define nullptr not_nullptr
-#define auto __auto_type
+
+#else
+#define not_nullptr nullptr
 
 #endif

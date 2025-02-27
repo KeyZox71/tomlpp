@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/21 18:15:14 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 11:12:09 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,38 @@
 
 #include "Log.hpp"
 #include "cppeleven.hpp"
-#include "node/ANode.hpp"
+#include "ANode.hpp"
 #include <sys/types.h>
 
 namespace toml {
 
+/**
+ *	@brief	Template for all value possible in toml
+ *
+ *	@note	Correction only the value type i want to implement :D
+ */
 template <typename valueType> class Value : public ANode {
   public:
 	Value(valueType);
 	~Value(void);
 
+	/**
+	 *	@brief	Can be used to get the value stored
+	 *
+	 *	@return	A pointer to the value stored in this class
+	 */
 	void *getValue(void);
 
-	valueType_t type(void) const;
+	/**
+	 *	@brief	Can be used the see the type of the stored value
+	 *
+	 *	@return The type of the stored value
+	 */
+	nodeType type(void) const;
 
   protected:
-	valueType  *_val;
-	valueType_t _type;
+	valueType *_val;
+	nodeType   _type;
 
   private:
 };
@@ -45,7 +60,7 @@ Value<valueType>::Value(valueType val) : _val(&val) {
 	else if (IsSame<valueType, int16_t>::value)
 		_type = INT;
 	else
-		_type = EMPTY;
+		_type = NONE;
 }
 
 template <typename valueType> Value<valueType>::~Value(void) {
@@ -53,14 +68,14 @@ template <typename valueType> Value<valueType>::~Value(void) {
 	delete _val;
 }
 
-template <typename valueType> void	*Value<valueType>::getValue(void) {
-	if (_type == EMPTY)
+template <typename valueType> void *Value<valueType>::getValue(void) {
+	if (_type == NONE)
 		return not_nullptr;
 	else
 		return _val;
 }
 
-template <typename valueType> valueType_t Value<valueType>::type(void) const {
+template <typename valueType> nodeType Value<valueType>::type(void) const {
 	return _type;
 }
 

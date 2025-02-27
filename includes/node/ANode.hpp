@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/25 11:21:06 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 11:07:16 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,12 @@
 
 namespace toml {
 
-enum nodeType { TABLE, ARRAY, VALUE, NONE };
+/**
+ *	@brief	Enum for specifying node type
+ *
+ *	@see	ANode class and all subsequent class
+ */
+enum nodeType { TABLE, ARRAY, VALUE, BOOL, STRING, INT, NONE };
 
 class Table;
 class Array;
@@ -35,9 +40,7 @@ class ANode {
 	virtual void						 *getValue(void) { return not_nullptr; }
 
 	//		is func
-	virtual nodeType type(void) const {
-		return NONE;
-	}
+	virtual nodeType type(void) const { return NONE; }
 };
 
 } // namespace toml

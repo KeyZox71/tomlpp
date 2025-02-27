@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/25 13:19:21 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 11:16:50 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 using namespace toml;
 using namespace tokenizer;
 
-void tokenizerError(std::string e) {
-	throw std::runtime_error("Token error - " + e);
-}
 
 void Tokenizer::next(void) {
 	while (_index < _input.size()) {

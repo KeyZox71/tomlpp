@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/25 11:43:08 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 10:56:43 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 namespace toml {
 namespace tokenizer {
 
+/**
+ * @brief	Enum for specifying the token type
+ *
+ * @see		Tokenizer class
+ */
 enum tokenType {
 	KEY,
 	VALUE,
@@ -38,35 +43,54 @@ enum tokenType {
 	ERR
 };
 
+/**
+ *	@brief	Struct for the tokenizer to return a token with it's type
+ *
+ *	@see	Tokenizer class
+ */
 struct token {
 	std::string token;
 	tokenType	type;
 };
 
+/**
+ *	@brief	Class that tokenize a plain text toml file
+ *
+ *			next() to scan for the next token and peek() to get the read token,
+ *			returns (token){"", END} if a end of file and return
+ *			(token){"", ERR} if didn't initialize with next()
+ *
+ *	@note	Throw an error if a token is invalid
+ */
 class Tokenizer {
   public:
 	Tokenizer(std::string &input)
 		: _input(input), _index(0), _currentToken((token){"", ERR}) {}
-	~Tokenizer(void){}
+	~Tokenizer(void) {}
 
 	/**
-	 *	@brief	Returns the next token in line in the toml file
-	 *
-	 *	@return	A struct containing the string of the token(which can be empty) and it's type
+	 *	@brief	Scan the _input for the next token
 	 */
-	void	next(void);
+	void next(void);
 	/**
 	 *	@brief	Returns the read token
 	 *
-	 *	@return	The a struct with a string and the type of the read token
+	 *	@return	A struct with a string and the type of the read token
 	 */
-	token	*peek(void);
+	token *peek(void);
 
   protected:
   private:
-	std::string _input;
-	size_t		_index;
-	token		_currentToken;
+	std::string _input;		   ///< The file input in plain text
+	size_t		_index;		   ///< The index which we are in the file
+	token		_currentToken; ///< The last read token
+
+	/**
+	 *	@brief	Internal function used to throw error in the tokenizer
+	 */
+	void tokenizerError(std::string e) {
+		throw std::runtime_error("Token error - " + e);
+	}
 };
 
 } // namespace tokenizer

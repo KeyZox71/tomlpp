@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 12:30:28 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 18:46:00 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
+#include <map>
 
 namespace toml {
 namespace tokenizer {
@@ -42,6 +43,26 @@ enum tokenType {
 	END,
 	ERR
 };
+
+std::string	tokenTypetoStr(tokenType type) {
+	static std::map<tokenType, std::string> tokenTypeName;
+	if (tokenTypeName.empty()) {
+		tokenTypeName[KEY] = "key";
+		tokenTypeName[VALUE] = "value";
+		tokenTypeName[TABLE_START] = "[";
+		tokenTypeName[TABLE_END] = "]";
+		tokenTypeName[ARRAY_START] = "{";
+		tokenTypeName[ARRAY_END] = "}";
+		tokenTypeName[ASSIGNMENT_OPERATOR] = "=";
+		tokenTypeName[STRING] = "string";
+		tokenTypeName[NUMBER] = "number";
+		tokenTypeName[BOOL] = "boolean";
+		tokenTypeName[NEWLINE] = "newline";
+		tokenTypeName[COMMA] = ",";
+		tokenTypeName[END] = "end of file";
+	}
+	return tokenTypeName.at(type);
+}
 
 /**
  *	@brief	Struct for the tokenizer to return a token with it's type

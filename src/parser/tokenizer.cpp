@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 11:16:50 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/28 12:40:47 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 using namespace toml;
 using namespace tokenizer;
-
 
 void Tokenizer::next(void) {
 	while (_index < _input.size()) {
@@ -67,7 +66,7 @@ void Tokenizer::next(void) {
 
 		if (isalpha(c)) {
 			size_t keyStart = _index - 1;
-			while (_index < _input.size() && isalpha(_input[_index])) {
+			while (_index < _input.size() && (isalpha(_input[_index]) || _input[_index] == '.')) {
 				_index++;
 			}
 			std::string endValue = _input.substr(keyStart, _index - keyStart);
@@ -81,23 +80,25 @@ void Tokenizer::next(void) {
 
 		switch (c) {
 		case '{':
-			_currentToken = (token){"{", TABLE_START};
+			_currentToken = (token){"[", TABLE_START};
 			return;
 		case '}':
-			_currentToken = (token){"}", TABLE_END};
+			_currentToken = (token){"]", TABLE_END};
 			return;
 		case '[':
-			_currentToken = (token){"[", ARRAY_START};
+			_currentToken = (token){"{", ARRAY_START};
 			return;
 		case ']':
-			_currentToken = (token){"]", ARRAY_END};
+			_currentToken = (token){"}", ARRAY_END};
 			return;
 		case '=':
 			_currentToken = (token){"=", ASSIGNMENT_OPERATOR};
 			return;
 		case '\n':
-			_currentToken = (token){"NEW", NEWLINE};
+			_currentToken = (token){"newline", NEWLINE};
 			return;
+		case ',':
+			_currentToken = (token){",", COMMA};
 		default:
 			tokenizerError("unrecognized token : " + std::string(1, c));
 		}

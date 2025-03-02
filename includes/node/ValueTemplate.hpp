@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 12:20:02 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/28 12:03:28 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ template <typename valueType> class Value : public ANode {
 			_type = BOOL;
 		else if (IsSame<valueType, std::string>::value)
 			_type = STRING;
-		else if (IsSame<valueType, int16_t>::value)
+		else if (IsSame<valueType, int32_t>::value)
 			_type = INT;
 		else
 			_type = NONE;

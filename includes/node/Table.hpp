@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 12:15:52 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/28 09:04:27 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ namespace toml {
  */
 class Table : public ANode {
   public:
-	Table(std::map<std::string, ANode> map) {
+	Table(std::map<std::string, ANode> *map) {
 		log("toml", "table", "constructor called");
-		_map = &map;
+		_map = map;
 	}
-	~Table(void) { log("toml", "table", "destructor called"); }
+	~Table(void) {
+		delete _map;
+		log("toml", "table", "destructor called"); }
 
 	/**
 	 *	@brief	Can be used to get the table stored

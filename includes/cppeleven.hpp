@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 08:19:14 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/26 15:53:41 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/02/27 18:01:14 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
  *has no fun
  */
 #pragma once
-
-#if __cplusplus == 199711L
-
-#undef nullptr
 
 /**
  *	@brief	IsSame in cpp98 ;D
@@ -30,6 +26,10 @@ template <typename T, typename U> struct IsSame {
 template <typename T> struct IsSame<T, T> {
 	static const bool value = true;
 };
+
+#if __cplusplus == 199711L
+
+#undef nullptr
 
 /**
  * @brief Emulating nullptr for C++98

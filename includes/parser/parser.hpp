@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/28 13:05:31 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/03 09:25:09 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ class Parser {
 	 *
 	 *	@return	A pointer to the newly allocted Value (new Value<type>())
 	 */
-	ANode *parseKeyValue(void);
+	parseKeyValue(void);
 	/**
 	 *	@brief	Used to parse an table
 	 *

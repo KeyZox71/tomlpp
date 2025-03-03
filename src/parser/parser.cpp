@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:30 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/03 09:21:36 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/03 11:07:03 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "cppeleven.hpp"
 #include "node/ANode.hpp"
 #include "node/Array.hpp"
+#include "node/Table.hpp"
 #include "parser/tokenizer.hpp"
 #include <cstdint>
 #include <node/default.hpp>
@@ -27,10 +28,15 @@ using namespace parser;
 
 ANode *Parser::parse(void) {}
 
-keyValue	Parser::parseKeyValue(void) {
+keyValue Parser::parseKeyValue(void) {
 	expect(tokenizer::KEY);
-	expect(tokenizer::ASSIGNMENT_OPERATOR);
 	keyValue kV;
+	kV.key = _tokenizer.peek()->token;
+	_tokenizer.next();
+
+	expect(tokenizer::ASSIGNMENT_OPERATOR);
+	_tokenizer.next();
+
 	switch (_tokenizer.peek()->type) {
 	case (tokenizer::BOOL):
 		kV.content = new Value<bool>(*(bool *)parseBool().getValue());
@@ -39,6 +45,8 @@ keyValue	Parser::parseKeyValue(void) {
 			new Value<std::string>(*(std::string *)parseString().getValue());
 	case (tokenizer::NUMBER):
 		kV.content = new Value<int32_t>(*(int32_t *)parseNumber().getValue());
+	case (tokenizer::ARRAY_START):
+		kV.content = parseArray();
 	default:
 		throw ParseError("Expected a value but found a " +
 						 tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
@@ -48,9 +56,12 @@ keyValue	Parser::parseKeyValue(void) {
 }
 
 ANode *Parser::parseTable(void) {
-	expect(tokenizer::TABLE_START);
-	expect(tokenizer::KEY);
-	expect(tokenizer::TABLE_END);
+	Table *table;
+
+	while (_tokenizer.peek()->type != tokenizer::END &&
+		   _tokenizer.peek()->type != tokenizer::TABLE_START) {
+		
+	}
 }
 
 ANode *Parser::parseArray(void) {

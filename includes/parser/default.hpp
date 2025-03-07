@@ -6,9 +6,11 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:43:29 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/28 11:43:42 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/03 11:58:51 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #include "parser.hpp"
 #include "tokenizer.hpp"

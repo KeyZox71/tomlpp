@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/28 09:03:07 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:13:07 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ namespace toml {
  */
 class Array : public ANode {
   public:
+	Array(void) {
+		log("toml", "array", "default constructor called");
+		
+	}
 	Array(std::vector<ANode> *vec) {
 		log("toml", "array", "constructor called");
 		_vec = vec;
@@ -40,6 +44,10 @@ class Array : public ANode {
 	 *ARRAY)
 	 */
 	nodeType type(void) const { return ARRAY; }
+
+	void	push_back(ANode val) {
+		_vec->push_back(val);
+	}
 
   protected:
   private:

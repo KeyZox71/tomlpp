@@ -6,16 +6,15 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/03 11:02:35 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:25:24 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "node/ANode.hpp"
-#include "node/ValueTemplate.hpp"
+#include "node/default.hpp"
 #include "parser/tokenizer.hpp"
-#include <cstdint>
+//#include <cstdint>
 #include <cstdlib>
 #include <node/default.hpp>
 #include <stdexcept>

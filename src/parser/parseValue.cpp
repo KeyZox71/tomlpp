@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:42:23 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/28 11:48:43 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:18:38 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,3 @@ bool	convertBool(std::string	boolean) {
 		return false;
 }
 
-toml::Value<bool>	Parser::parseBool(void) {
-}

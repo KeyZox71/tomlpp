@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:30 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/03 11:07:03 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:16:14 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "node/Array.hpp"
 #include "node/Table.hpp"
 #include "parser/tokenizer.hpp"
-#include <cstdint>
+//#include <cstdint>
 #include <node/default.hpp>
 #include <stdexcept>
 #include <string>
@@ -56,8 +56,6 @@ keyValue Parser::parseKeyValue(void) {
 }
 
 ANode *Parser::parseTable(void) {
-	Table *table;
-
 	while (_tokenizer.peek()->type != tokenizer::END &&
 		   _tokenizer.peek()->type != tokenizer::TABLE_START) {
 		

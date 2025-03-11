@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/07 15:25:24 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/11 09:49:55 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 #include "node/default.hpp"
 #include "parser/tokenizer.hpp"
-//#include <cstdint>
 #include <cstdlib>
 #include <node/default.hpp>
 #include <stdexcept>
@@ -127,6 +126,14 @@ class Parser {
 			throw e;
 		}
 	}
+
+	/**
+	 *	@brief	Can be used to insert a keyValue a specific place in the table
+	 *
+	 *	@param	The location of the newly added keyvalue
+	 *	@param	The keyValue to add
+	 */
+	void addToTable(std::string, parser::keyValue);
 
 	/**
 	 *	@brief	Check if the current token is of the expected type

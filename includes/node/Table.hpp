@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/07 15:25:52 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/11 13:24:38 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,6 @@ class Table : public ANode {
 	 *	@return Always returns TABLE
 	 */
 	nodeType type(void) const { return TABLE; }
-
-	/**
-	 *	@brief	Can be used to insert a keyValue a a specific place in the table
-	 *
-	 *	@param	The location of the newly added keyvalue
-	 *	@param	The keyValue to add
-	 */
-	void insert(std::string where, parser::keyValue keyVal) {
-		(void)where;
-		(void)keyVal;
-	}
 
   protected:
   private:

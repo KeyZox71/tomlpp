@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:30 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/07 15:16:14 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/11 20:43:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ keyValue Parser::parseKeyValue(void) {
 	return kV;
 }
 
-ANode *Parser::parseTable(void) {
+ANode *Parser::parseTable(std::string table) {
 	while (_tokenizer.peek()->type != tokenizer::END &&
 		   _tokenizer.peek()->type != tokenizer::TABLE_START) {
-		
+		expect(tokenizer::KEY);
+		parseKeyValue();
 	}
 }
 

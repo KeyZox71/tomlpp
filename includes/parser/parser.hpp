@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/11 09:49:55 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/11 20:43:47 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ class Parser {
   protected:
   private:
 	tokenizer::Tokenizer _tokenizer; ///> the tokenizer class
-	Table				*_finalNode; ///> the final table that will be returned
+	ANode				*_finalNode; ///> the final table that will be returned
 
 	/**
 	 *	@brief	Used to parse a key-value pair
@@ -71,9 +71,11 @@ class Parser {
 	/**
 	 *	@brief	Used to parse an table
 	 *
+	 *	@param	The name (or path) of the table that will be parsed
+	 *
 	 *	@return	A pointer to the newly allocted table (new Table())
 	 */
-	ANode *parseTable(void);
+	ANode *parseTable(std::string);
 	/**
 	 *	@brief	Used to parse an array
 	 *

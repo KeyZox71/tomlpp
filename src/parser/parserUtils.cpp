@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:40:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/11 19:35:52 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/12 10:06:04 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "node/ANode.hpp"
 #include "node/default.hpp"
 #include "parser/default.hpp"
-#include "parser/parser.hpp"
-#include "parser/tokenizer.hpp"
 #include <sstream>
 #include <string>
 #include <vector>
@@ -44,24 +42,24 @@ void Parser::addToTable(std::string keyTable, parser::keyValue keyVal) {
 						   newKeyTable->end());
 		delete newKeyTable;
 	}
-	ANode	   *actualTable = _finalNode;
-	std::string keyToFind;
+	std::map<std::string, ANode> &actualTable = *_finalNode->getTable();
+	std::string					  keyToFind;
 
 	for (size_t i = 0; !splitedKey->at(i).empty(); i++) {
 		std::string keyToFind = splitedKey->at(i);
 		if (i == splitedKey->size())
 			break;
-		else if (actualTable->type() == TABLE) {
-			actualTable = actualTable->getTable();
+		else if (actualTable[keyToFind].type() == TABLE) {
+			actualTable = *(actualTable[keyToFind].getTable());
 		} else {
 			throw ParseError("key : " + keyTable + "." + keyVal.key +
 							 " is already assigned to a " +
-							 nodeTypeToStr(actualTable->type()));
+							 nodeTypeToStr(actualTable[keyToFind].type()));
 		}
 	}
 
 	if (!keyToFind.empty()) {
-		actualTable->getTable()[keyToFind] = keyVal.content;
+		actualTable[keyToFind] = *keyVal.content;
 	}
 	throw ParseError("last key is empty :(");
 }

@@ -6,13 +6,13 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 08:19:14 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 18:01:14 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/12 09:16:21 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  *	@brief	Just a random file to emulate cpp 11 behavior in cpp98 because 42
- *has no fun
+ *			has no fun
  */
 #pragma once
 

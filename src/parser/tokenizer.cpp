@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:42:13 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/28 12:40:47 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/12 10:22:12 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,26 @@ void Tokenizer::next(void) {
 
 		switch (c) {
 		case '{':
-			_currentToken = (token){"[", TABLE_START};
+			_currentToken = (token){"", TABLE_START};
 			return;
 		case '}':
-			_currentToken = (token){"]", TABLE_END};
+			_currentToken = (token){"", TABLE_END};
 			return;
 		case '[':
-			_currentToken = (token){"{", ARRAY_START};
+			_currentToken = (token){"", ARRAY_START};
 			return;
 		case ']':
-			_currentToken = (token){"}", ARRAY_END};
+			_currentToken = (token){"", ARRAY_END};
 			return;
 		case '=':
-			_currentToken = (token){"=", ASSIGNMENT_OPERATOR};
+			_currentToken = (token){"", ASSIGNMENT_OPERATOR};
 			return;
 		case '\n':
-			_currentToken = (token){"newline", NEWLINE};
+			_currentToken = (token){"", NEWLINE};
 			return;
 		case ',':
-			_currentToken = (token){",", COMMA};
+			_currentToken = (token){"", COMMA};
+			return;
 		default:
 			tokenizerError("unrecognized token : " + std::string(1, c));
 		}

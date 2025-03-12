@@ -6,16 +6,14 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/11 13:24:38 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/12 09:16:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "ANode.hpp"
+#include "default.hpp"
 #include "Log.hpp"
-#include "parser/parser.hpp"
-#include "parser/tokenizer.hpp"
 #include <map>
 
 namespace toml {

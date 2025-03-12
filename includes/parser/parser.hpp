@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/11 20:43:47 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/12 09:08:42 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ struct keyValue {
 class Parser {
   public:
 	Parser(tokenizer::Tokenizer &tokenizer) : _tokenizer(tokenizer) {
+		_tokenizer.next();
 		log("toml", "parser", "constructor called");
 	}
 	~Parser(void) { log("toml", "parser", "destructor called"); }
@@ -72,22 +73,14 @@ class Parser {
 	 *	@brief	Used to parse an table
 	 *
 	 *	@param	The name (or path) of the table that will be parsed
-	 *
-	 *	@return	A pointer to the newly allocted table (new Table())
 	 */
-	ANode *parseTable(std::string);
+	void parseTable(std::string &);
 	/**
 	 *	@brief	Used to parse an array
 	 *
 	 *	@return	A pointer to the newly allocted array (new Array())
 	 */
 	ANode *parseArray(void);
-	/**
-	 *	@brief	Used to parse token into value
-	 *
-	 *	@return	A pointer to the newly allocated value
-	 */
-	ANode parseValue(void) {}
 	/**
 	 *	@brief	Used to parse boolean value from the current token
 	 *
@@ -124,7 +117,7 @@ class Parser {
 				throw ParseError(
 					"Error while parsing number : " + _tokenizer.peek()->token +
 					" should be atoi compliant");
-		} catch (std::runtime_error e) {
+		} catch (std::runtime_error &e) {
 			throw e;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/12 09:34:17 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 09:24:49 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 #include <string>
 #include <sys/types.h>
 #include <vector>
+#include "Log.hpp"
+
+#define auto __auto_type
 
 namespace toml {
 
@@ -65,6 +68,10 @@ class ANode {
 	 *	@return	Type of the store value/table/array
 	 */
 	virtual nodeType type(void) const { return NONE; }
+
+	virtual ~ANode(void) {
+		log("toml", "ANode", "destructor called");
+	}
 };
 
 } // namespace toml

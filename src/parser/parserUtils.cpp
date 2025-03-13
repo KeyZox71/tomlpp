@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:40:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 08:09:12 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 09:06:42 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ void Parser::addToTable(std::string keyTable, parser::keyValue keyVal) {
 
 	if (!keyToFind.empty()) {
 		actualTable[keyToFind] = *keyVal.content;
+		delete splitedKey;
+		return ;
 	}
+	delete splitedKey;
 	throw ParseError("last key is empty :(");
 }

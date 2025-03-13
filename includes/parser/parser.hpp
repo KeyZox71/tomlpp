@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 08:08:04 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 09:22:28 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,13 @@ class Parser {
   public:
 	Parser(tokenizer::Tokenizer &tokenizer) : _tokenizer(tokenizer) {
 		_tokenizer.next();
+		_finalNode = new Table();
 		log("toml", "parser", "constructor called");
 	}
-	~Parser(void) { log("toml", "parser", "destructor called"); }
+	~Parser(void) { 
+		delete _finalNode;
+		log("toml", "parser", "destructor called");
+	}
 
 	/**
 	 *	@brief	Can be used to parse the tokens returned by the tokenizer

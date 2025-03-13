@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 19:04:43 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 21:08:24 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ class Parser {
 	 *	@return	A pointer to the main table in the AST
 	 */
 	ANode *parse(void);
-
-	
-	void	clear(void);
 
   protected:
   private:

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:40:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 20:33:55 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:48:00 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ std::vector<std::string> *splitKey(std::string key) {
 }
 
 void Parser::addToTable(std::string keyTable, parser::keyValue keyVal) {
-	if (keyVal.key.empty())
+	if (keyVal.key.empty()) {
+		delete _finalNode;
 		throw ParseError("Expected a key but got nothing :(");
+	}
 
 	std::vector<std::string> *splitedKey = splitKey(keyVal.key);
 	if (!keyTable.empty()) {
@@ -49,6 +51,7 @@ void Parser::addToTable(std::string keyTable, parser::keyValue keyVal) {
 		else if (actualTable->at(keyToFind)->type() == TABLE) {
 			actualTable = actualTable->at(keyToFind)->getTable();
 		} else {
+			delete _finalNode;
 			throw ParseError("key : " + keyTable + "." + keyVal.key +
 							 " is already assigned to a " +
 							 nodeTypeToStr(actualTable->at(keyToFind)->type()));

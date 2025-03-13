@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:30 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 20:36:33 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:42:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,46 +38,9 @@ ANode *Parser::parse(void) {
 void Parser::expect(tokenizer::tokenType expected) {
 	if (_tokenizer.peek()->type == expected)
 		return;
+	delete _finalNode;
 	throw ParseError("Expected a " + tokenizer::tokenTypetoStr(expected) +
 					 " but got a " +
 					 tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
 					 " = " + _tokenizer.peek()->token);
-}
-
-void	clearArray(std::vector<ANode> *value) {
-	delete value;
-}
-
-void	clearTable(std::map<std::string, ANode *> *table) {
-	std::map<std::string, ANode *>::iterator it;
-	for (it = table->begin(); it != table->end(); it++) {
-		
-	}
-	delete table;
-}
-
-void	Parser::clear(void) {
-	if (_finalNode->type() == TABLE) {
-		std::map<std::string, ANode *> *table =  _finalNode->getTable();
-		std::map<std::string, ANode *>::iterator it;
-
-		for (it = table->begin(); it != table->end(); it++) {
-			switch (it->second->type()) {
-				case TABLE:
-					clearTable(it->second->getTable());
-					break;
-				case ARRAY:
-					clearArray(it->second->getArray());
-					break;
-				case BOOL:
-				case INT:
-				case STRING:
-					delete it->second;
-					break;
-				default:
-					break;
-			};
-		}
-
-	}
 }

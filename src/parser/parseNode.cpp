@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 08:10:47 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 08:07:04 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:54:50 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ keyValue Parser::parseKeyValue(void) {
 		kV.content = parseArray();
 		break;
 	default:
+		delete _finalNode;
 		throw ParseError("Expected a value but found a " +
 						 tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
 						 " = " + _tokenizer.peek()->token);
@@ -93,11 +94,19 @@ ANode *Parser::parseArray(void) {
 	if (_tokenizer.peek()->type == tokenizer::ARRAY_END) {
 		return new Array(array);
 	}
+	delete _finalNode;
 	throw ParseError("Expected a " +
 					 tokenizer::tokenTypetoStr(tokenizer::ARRAY_END) +
 					 " but ended up to end of file");
 }
 
+/**
+ *	@brief	convert a string to a boolean
+ *
+ *	@param	A string containing the boolean
+ *
+ *	@return The boolean :D
+ */
 bool	convertBool(std::string	boolean) {
 	if (boolean == "true")
 		return true;

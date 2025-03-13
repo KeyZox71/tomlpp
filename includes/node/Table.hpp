@@ -6,14 +6,14 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 20:26:36 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:57:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "default.hpp"
 #include "Log.hpp"
+#include "default.hpp"
 #include <map>
 
 namespace toml {
@@ -27,7 +27,7 @@ namespace toml {
 class Table : public ANode {
   public:
 	Table(void) {
-		log("toml", "table", "map constructor called");
+		log("toml", "table", "default constructor called");
 		_map = new std::map<std::string, ANode *>;
 	}
 	Table(std::map<std::string, ANode *> *map) {
@@ -35,6 +35,10 @@ class Table : public ANode {
 		_map = map;
 	}
 	~Table(void) {
+		std::map<std::string, ANode *>::iterator it;
+		for (it = _map->begin(); it != _map->end(); it++) {
+			delete it->second;
+		}
 		delete _map;
 		log("toml", "table", "destructor called");
 	}

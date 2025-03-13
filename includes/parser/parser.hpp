@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/12 09:08:42 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 08:08:04 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ class Parser {
 		} catch (std::runtime_error &e) {
 			throw e;
 		}
+		return Value<int32_t>(0);
 	}
 
 	/**

@@ -6,19 +6,12 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:30 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/12 09:08:27 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 08:09:53 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parser.hpp"
-#include "cppeleven.hpp"
-#include "node/ANode.hpp"
-#include "node/Array.hpp"
-#include "node/Table.hpp"
 #include "parser/tokenizer.hpp"
-#include <node/default.hpp>
-#include <stdexcept>
-#include <string>
 
 using namespace toml;
 using namespace parser;

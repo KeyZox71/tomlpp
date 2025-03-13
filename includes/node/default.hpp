@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 09:12:05 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/11 19:14:40 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 08:38:49 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace toml {
 
-std::string nodeTypeToStr(nodeType type) {
+static inline std::string nodeTypeToStr(nodeType type) {
 	static std::map<nodeType, std::string> nodeTypeName;
 	if (nodeTypeName.empty()) {
 		nodeTypeName[TABLE] = "table";

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/02/27 18:46:00 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 08:37:45 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ enum tokenType {
 	ERR
 };
 
-std::string	tokenTypetoStr(tokenType type) {
+static inline std::string	tokenTypetoStr(tokenType type) {
 	static std::map<tokenType, std::string> tokenTypeName;
 	if (tokenTypeName.empty()) {
 		tokenTypeName[KEY] = "key";

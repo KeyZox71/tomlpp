@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/12 09:16:01 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:26:36 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ class Table : public ANode {
   public:
 	Table(void) {
 		log("toml", "table", "map constructor called");
-		_map = new std::map<std::string, ANode>;
+		_map = new std::map<std::string, ANode *>;
 	}
-	Table(std::map<std::string, ANode> *map) {
+	Table(std::map<std::string, ANode *> *map) {
 		log("toml", "table", "map constructor called");
 		_map = map;
 	}
@@ -44,7 +44,7 @@ class Table : public ANode {
 	 *
 	 *	@return	A pointer to a map containing the stored table
 	 */
-	std::map<std::string, ANode> *getTable(void) { return _map; }
+	std::map<std::string, ANode *> *getTable(void) { return _map; }
 	/**
 	 *	@brief	Can be used to get type (always returns TABLE)
 	 *
@@ -54,7 +54,7 @@ class Table : public ANode {
 
   protected:
   private:
-	std::map<std::string, ANode> *_map; ///< Map of the stored table
+	std::map<std::string, ANode *> *_map; ///< Map of the stored table
 };
 
 } // namespace toml

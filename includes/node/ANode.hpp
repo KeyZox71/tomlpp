@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 09:24:49 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:26:52 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ class ANode {
 	 *
 	 *	@return Pointer to the stored table
 	 */
-	virtual std::map<std::string, ANode> *getTable(void) { return not_nullptr; }
+	virtual std::map<std::string, ANode *> *getTable(void) { return not_nullptr; }
 	/**
 	 *	@brief	Can be used to get the stored array (in this case return
 	 *			nullptr)

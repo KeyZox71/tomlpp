@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:40:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 09:06:42 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 20:33:55 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ std::vector<std::string> *splitKey(std::string key) {
 void Parser::addToTable(std::string keyTable, parser::keyValue keyVal) {
 	if (keyVal.key.empty())
 		throw ParseError("Expected a key but got nothing :(");
+
 	std::vector<std::string> *splitedKey = splitKey(keyVal.key);
 	if (!keyTable.empty()) {
 		std::vector<std::string> *newKeyTable = splitKey(keyTable);
@@ -37,24 +38,25 @@ void Parser::addToTable(std::string keyTable, parser::keyValue keyVal) {
 						   newKeyTable->end());
 		delete newKeyTable;
 	}
-	std::map<std::string, ANode> &actualTable = *_finalNode->getTable();
+
+	std::map<std::string, ANode *> *actualTable = _finalNode->getTable();
 	std::string					  keyToFind;
 
 	for (size_t i = 0; !splitedKey->at(i).empty(); i++) {
 		std::string keyToFind = splitedKey->at(i);
 		if (i == splitedKey->size())
 			break;
-		else if (actualTable[keyToFind].type() == TABLE) {
-			actualTable = *(actualTable[keyToFind].getTable());
+		else if (actualTable->at(keyToFind)->type() == TABLE) {
+			actualTable = actualTable->at(keyToFind)->getTable();
 		} else {
 			throw ParseError("key : " + keyTable + "." + keyVal.key +
 							 " is already assigned to a " +
-							 nodeTypeToStr(actualTable[keyToFind].type()));
+							 nodeTypeToStr(actualTable->at(keyToFind)->type()));
 		}
 	}
 
 	if (!keyToFind.empty()) {
-		actualTable[keyToFind] = *keyVal.content;
+		(*actualTable)[keyToFind] = keyVal.content;
 		delete splitedKey;
 		return ;
 	}

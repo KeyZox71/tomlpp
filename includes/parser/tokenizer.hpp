@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 08:37:45 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 21:34:39 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "node/Table.hpp"
 #include <cstddef>
 #include <fstream>
-#include <string>
 #include <map>
+#include <string>
 
 namespace toml {
 namespace tokenizer {
@@ -44,7 +44,7 @@ enum tokenType {
 	ERR
 };
 
-static inline std::string	tokenTypetoStr(tokenType type) {
+static inline std::string tokenTypetoStr(tokenType type) {
 	static std::map<tokenType, std::string> tokenTypeName;
 	if (tokenTypeName.empty()) {
 		tokenTypeName[KEY] = "key";
@@ -86,19 +86,115 @@ struct token {
 class Tokenizer {
   public:
 	Tokenizer(std::string &input)
-		: _input(input), _index(0), _currentToken((token){"", ERR}) { log("toml", "tokenizer", "constructor called");}
+		: _input(input), _index(0), _currentToken((token){"", ERR}) {
+		log("toml", "tokenizer", "constructor called");
+	}
 	~Tokenizer(void) {}
 
 	/**
 	 *	@brief	Scan the _input for the next token
 	 */
-	void next(void);
+	void next(void) {
+		while (_index < _input.size()) {
+			char c = _input[_index];
+			_index++;
+
+			if (std::isspace(c) && c != '\n')
+				continue;
+
+			if (c == '#' && _index < _input.size() && _input[_index] != '\n') {
+				size_t commentEnd = _input.find('\n', _index);
+				if (commentEnd != _input.npos) {
+					_index = commentEnd + 1;
+				} else {
+					_index = _input.size();
+				}
+				continue;
+			}
+
+			if (std::isdigit(c)) {
+				size_t nbStart = _index;
+				while (_index < _input.size() && isdigit(_input[_index])) {
+					_index++;
+				}
+				_currentToken = (token){
+					_input.substr(nbStart - 1, _index - nbStart + 1), NUMBER};
+				return;
+			}
+
+			if (c == '"') {
+				size_t strStart = _index;
+				bool   escape = false;
+				while (_index < _input.size() && _input[_index] != '"' &&
+					   _input[_index] != '\n') {
+					escape = !escape && _input[_index] == '\\';
+					_index++;
+				}
+				if (_index == _input.size())
+					tokenizerError("unexpected token in string : " +
+								   std::string(_input[_index], 1));
+				_index++;
+				_currentToken = (token){
+					_input.substr(strStart, _index - strStart - 1), STRING};
+				return;
+			}
+
+			if (isalpha(c)) {
+				size_t keyStart = _index - 1;
+				while (_index < _input.size() &&
+					   (isalpha(_input[_index]) || _input[_index] == '.')) {
+					_index++;
+				}
+				std::string endValue =
+					_input.substr(keyStart, _index - keyStart);
+				if (endValue == "true" || endValue == "false") {
+					_currentToken = (token){endValue, BOOL};
+					return;
+				}
+				_currentToken = (token){endValue, KEY};
+				return;
+			}
+
+			switch (c) {
+			case '{':
+				_currentToken = (token){"", TABLE_START};
+				return;
+			case '}':
+				_currentToken = (token){"", TABLE_END};
+				return;
+			case '[':
+				_currentToken = (token){"", ARRAY_START};
+				return;
+			case ']':
+				_currentToken = (token){"", ARRAY_END};
+				return;
+			case '=':
+				_currentToken = (token){"", ASSIGNMENT_OPERATOR};
+				return;
+			case '\n':
+				_currentToken = (token){"", NEWLINE};
+				return;
+			case ',':
+				_currentToken = (token){"", COMMA};
+				return;
+			default:
+				tokenizerError("unrecognized token : " + std::string(1, c));
+			}
+		}
+		_currentToken = (token){"", END};
+		return;
+	}
 	/**
 	 *	@brief	Returns the read token
 	 *
 	 *	@return	A struct with a string and the type of the read token
 	 */
-	token *peek(void);
+	token *peek(void) {
+		if (_currentToken.type != ERR && _currentToken.type != END) {
+			return &_currentToken;
+		}
+		return not_nullptr;
+	}
 
   protected:
   private:

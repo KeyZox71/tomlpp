@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 20:26:52 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 22:02:54 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 #include <sys/types.h>
 #include <vector>
 #include "Log.hpp"
-
-#define auto __auto_type
 
 namespace toml {
 

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/12 09:34:34 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/13 22:14:05 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ template <typename valueType> class Value : public ANode {
   public:
 	Value(valueType val) : _val(&val) {
 		log("toml", "value", "constructor called");
+		std::cout << val << std::endl;
 		if (IsSame<valueType, bool>::value)
 			_type = BOOL;
 		else if (IsSame<valueType, std::string>::value)

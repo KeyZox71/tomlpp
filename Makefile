@@ -6,7 +6,7 @@
 #    By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 16:09:27 by adjoly            #+#    #+#              #
-#    Updated: 2025/02/25 11:41:08 by adjoly           ###   ########.fr        #
+#    Updated: 2025/03/13 22:05:56 by adjoly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ NC = \033[0m
 DELETE = \x1B[2K\r
 
 ifeq ($(VERBOSE),true)
-	FLAGS += -D VERBOSE
+	CXXFLAGS += -D VERBOSE
 endif
 
 all: $(NAME)
@@ -45,6 +45,9 @@ $(NAME): $(OBJS)
 	@printf "$(YELLOW)「✨」 feat($(NAME)): linking $(NAME)\n"
 	@$(CC) -shared -o $(NAME) $(LDFLAGS) $(OBJS)
 	@printf "$(YELLOW)「✨」 feat($(NAME)): $(NAME) compiled ! :D\n"
+
+test:
+	@$(CC) -I $(INCLUDES) $(CXXFLAGS) -o tomlpp main.cpp
 
 $(OBJSDIR)%.o: %.cpp
 	@mkdir -p $(@D)

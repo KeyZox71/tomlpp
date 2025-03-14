@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 21:33:50 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/14 16:18:16 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static inline std::vector<std::string> *splitKey(std::string key) {
 	std::string				  singleKey;
 
 	while (std::getline(ss, singleKey, '.')) {
+		std::cout << "splitedKey = " << singleKey << std::endl;
 		splitedKey->push_back(singleKey);
 	}
 	return splitedKey;
@@ -128,17 +129,21 @@ class Parser {
 
 		switch (_tokenizer.peek()->type) {
 		case (tokenizer::BOOL):
+			//std::cout << "parsed keyval = " << kV.key << std::cout;
 			kV.content = new Value<bool>(*(bool *)parseBool().getValue());
 			break;
 		case (tokenizer::STRING):
+			std::cout << "parsed str keyval = " << kV.key << std::cout;
 			kV.content = new Value<std::string>(
 				*(std::string *)parseString().getValue());
 			break;
 		case (tokenizer::NUMBER):
+			std::cout << "parsed keyval = " << kV.key << std::cout;
 			kV.content =
 				new Value<int32_t>(*(int32_t *)parseNumber().getValue());
 			break;
 		case (tokenizer::ARRAY_START):
+			std::cout << "parsed keyval = " << kV.key << std::cout;
 			kV.content = parseArray();
 			break;
 		default:
@@ -278,11 +283,13 @@ class Parser {
 
 		for (size_t i = 0; !splitedKey->at(i).empty(); i++) {
 			std::string keyToFind = splitedKey->at(i);
-			if (i == splitedKey->size())
+			if (i == splitedKey->size()) {
 				break;
-			else if (actualTable->at(keyToFind)->type() == TABLE) {
+			}
+			else if (actualTable->find(keyToFind) != actualTable->end() && actualTable->at(keyToFind)->type() == TABLE) {
 				actualTable = actualTable->at(keyToFind)->getTable();
-			} else {
+			}
+			else {
 				delete _finalNode;
 				throw ParseError(
 					"key : " + keyTable + "." + keyVal.key +
@@ -291,6 +298,7 @@ class Parser {
 			}
 		}
 
+		std::cout << "keyToFind after = " << keyToFind << std::endl;
 		if (!keyToFind.empty()) {
 			(*actualTable)[keyToFind] = keyVal.content;
 			delete splitedKey;

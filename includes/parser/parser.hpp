@@ -6,12 +6,16 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/14 16:18:16 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/14 18:46:47 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include "cppeleven.hpp"
+#include "node/ANode.hpp"
+#include "node/Table.hpp"
+#include "node/ValueTemplate.hpp"
 #include "node/default.hpp"
 #include "parser/tokenizer.hpp"
 #include <cstdlib>
@@ -61,7 +65,6 @@ static inline std::vector<std::string> *splitKey(std::string key) {
 	std::string				  singleKey;
 
 	while (std::getline(ss, singleKey, '.')) {
-		std::cout << "splitedKey = " << singleKey << std::endl;
 		splitedKey->push_back(singleKey);
 	}
 	return splitedKey;
@@ -129,21 +132,15 @@ class Parser {
 
 		switch (_tokenizer.peek()->type) {
 		case (tokenizer::BOOL):
-			//std::cout << "parsed keyval = " << kV.key << std::cout;
-			kV.content = new Value<bool>(*(bool *)parseBool().getValue());
+			kV.content = new Value<bool>(parseBool());
 			break;
 		case (tokenizer::STRING):
-			std::cout << "parsed str keyval = " << kV.key << std::cout;
-			kV.content = new Value<std::string>(
-				*(std::string *)parseString().getValue());
+			kV.content = new Value<std::string>(_tokenizer.peek()->token);
 			break;
 		case (tokenizer::NUMBER):
-			std::cout << "parsed keyval = " << kV.key << std::cout;
-			kV.content =
-				new Value<int32_t>(*(int32_t *)parseNumber().getValue());
+			kV.content = new Value<int32_t>(parseNumber());
 			break;
 		case (tokenizer::ARRAY_START):
-			std::cout << "parsed keyval = " << kV.key << std::cout;
 			kV.content = parseArray();
 			break;
 		default:
@@ -161,14 +158,17 @@ class Parser {
 	 *	@param	The name (or path) of the table that will be parsed
 	 */
 	void parseTable(std::string &table) {
-		while (_tokenizer.peek()->type != tokenizer::END &&
+		while (_tokenizer.peek() != not_nullptr &&
+			   _tokenizer.peek()->type != tokenizer::END &&
 			   _tokenizer.peek()->type != tokenizer::TABLE_START) {
 			keyValue kV = parseKeyValue();
 			addToTable(table, kV);
 			_tokenizer.next();
+			std::cout << *(std::string *)(kV.content)->getValue() << std::endl;
 			expect(tokenizer::NEWLINE);
 			_tokenizer.next();
 		}
+		return;
 	}
 	/**
 	 *	@brief	Used to parse an array
@@ -185,13 +185,14 @@ class Parser {
 			try {
 				switch (_tokenizer.peek()->type) {
 				case (tokenizer::BOOL):
-					array->push_back(parseBool());
+					array->push_back(Value<bool>(parseBool()));
 					break;
 				case (tokenizer::STRING):
-					array->push_back(parseString());
+					array->push_back(
+						Value<std::string>(_tokenizer.peek()->token));
 					break;
 				case (tokenizer::NUMBER):
-					array->push_back(parseNumber());
+					array->push_back(Value<int32_t>(parseNumber()));
 					break;
 				default:
 					throw ParseError(
@@ -219,22 +220,13 @@ class Parser {
 	/**
 	 *	@brief	Used to parse boolean value from the current token
 	 *
-	 *	@return	A value class with the boolean value in it
+	 *	@return	The parsed boolean
 	 */
-	Value<bool> parseBool(void) {
+	bool parseBool(void) {
 		if (_tokenizer.peek()->token == "true")
 			return true;
 		else
 			return false;
-	}
-	/**
-	 *	@brief	Used to parse string value from the current token (only copy it
-	 *into a Value class)
-	 *
-	 *	@return	A value class with the string in it
-	 */
-	Value<std::string> parseString(void) {
-		return Value<std::string>(_tokenizer.peek()->token);
 	}
 	/**
 	 *	@brief	Used to parse number value from the current token
@@ -243,19 +235,20 @@ class Parser {
 	 *
 	 *	@return	A value class with the number in it
 	 */
-	Value<int32_t> parseNumber(void) {
+	int32_t parseNumber(void) {
 		try {
 			if (_tokenizer.peek()->token == "0")
-				return Value<int32_t>(0);
+				return 0;
 			int32_t nb = std::atoi(_tokenizer.peek()->token.c_str());
 			if (nb == 0)
 				throw ParseError(
 					"Error while parsing number : " + _tokenizer.peek()->token +
 					" should be atoi compliant");
+			else
+				return nb;
 		} catch (std::runtime_error &e) {
 			throw e;
 		}
-		return Value<int32_t>(0);
 	}
 
 	/**
@@ -278,29 +271,33 @@ class Parser {
 			delete newKeyTable;
 		}
 
-		std::map<std::string, ANode *> *actualTable = _finalNode->getTable();
-		std::string						keyToFind;
+		std::map<std::string, ANode *>	  *actualTable = _finalNode->getTable();
+		std::vector<std::string>::iterator it = splitedKey->begin();
+		std::string						   keyToFind = *it;
 
-		for (size_t i = 0; !splitedKey->at(i).empty(); i++) {
-			std::string keyToFind = splitedKey->at(i);
-			if (i == splitedKey->size()) {
-				break;
-			}
-			else if (actualTable->find(keyToFind) != actualTable->end() && actualTable->at(keyToFind)->type() == TABLE) {
+
+		std::cout << actualTable << std::endl;
+		for (size_t i = 0; i < splitedKey->size() - 1; i++) {
+			std::string keyToFind = *it;
+			if ((*actualTable).find(keyToFind) == actualTable->end()) {
+				(*actualTable)[keyToFind] = new Table();
 				actualTable = actualTable->at(keyToFind)->getTable();
-			}
-			else {
+			} else if (actualTable->find(keyToFind)->second->type() == TABLE) {
+				actualTable = actualTable->at(keyToFind)->getTable();
+			} else {
 				delete _finalNode;
 				throw ParseError(
 					"key : " + keyTable + "." + keyVal.key +
 					" is already assigned to a " +
 					nodeTypeToStr(actualTable->at(keyToFind)->type()));
 			}
+			it++;
 		}
-
-		std::cout << "keyToFind after = " << keyToFind << std::endl;
-		if (!keyToFind.empty()) {
-			(*actualTable)[keyToFind] = keyVal.content;
+		if (!splitedKey->back().empty()) {
+			// need to copy deep copy of keyval.content and not assigning - TODO
+			if (keyVal.content->type() == STRING)
+				(*actualTable)[keyToFind] =  keyVal.content;
+			std::cout << keyVal.content << std::endl;
 			delete splitedKey;
 			return;
 		}
@@ -319,9 +316,9 @@ class Parser {
 		delete _finalNode;
 		throw ParseError("Expected a " + tokenizer::tokenTypetoStr(expected) +
 						 " but got a " +
-						 tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
-						 " = " + _tokenizer.peek()->token);
+						 tokenizer::tokenTypetoStr(_tokenizer.peek()->type));
 	}
+
 };
 
 }; // namespace parser

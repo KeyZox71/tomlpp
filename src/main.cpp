@@ -1,3 +1,6 @@
+#include "cppeleven.hpp"
+#include "node/ANode.hpp"
+#include <stdexcept>
 #include <tomlpp.hpp>
 
 int main(void) {
@@ -5,7 +8,15 @@ int main(void) {
 
 	toml::ANode *node = file.getParsedFile();
 
-	void *content = (*node->getTable())["test"]->getValue();
+	if (node->getTable() == not_nullptr ) {
+		throw std::runtime_error("nique tes mort");
+	}
+	if ((*(node->getTable()))["hola"] == not_nullptr ) {
+		throw std::runtime_error("je vais me suicider");
+	}
 
-	std::cout << "test = " << (std::string *)content << std::endl;
+	//std::cout << *(std::string *)(*node->getTable())["hola"]->getValue() << std::endl;
+
+	//std::cout << "test = " << content << std::endl;
+	delete node;
 }

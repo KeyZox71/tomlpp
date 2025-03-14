@@ -6,13 +6,13 @@
 #    By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 16:09:27 by adjoly            #+#    #+#              #
-#    Updated: 2025/03/13 22:05:56 by adjoly           ###   ########.fr        #
+#    Updated: 2025/03/14 17:53:23 by adjoly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SHELL = bash
 
-NAME = tomlpp.so
+NAME = tomlpp
 
 CC = c++
 
@@ -24,7 +24,7 @@ SRCS = $(shell find src -name '*.cpp')
 
 OBJS = $(addprefix $(OBJSDIR), $(SRCS:.cpp=.o))
 
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -MMD -MP -c -fPIC
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -MMD -MP -g
 
 LDFLAGS = -shared
 
@@ -43,7 +43,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@printf "$(YELLOW)「✨」 feat($(NAME)): linking $(NAME)\n"
-	@$(CC) -shared -o $(NAME) $(LDFLAGS) $(OBJS)
+	@$(CC) -o $(NAME) $(CXXFLAGS) $(OBJS)
 	@printf "$(YELLOW)「✨」 feat($(NAME)): $(NAME) compiled ! :D\n"
 
 test:

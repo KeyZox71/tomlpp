@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 20:57:01 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/14 18:21:38 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Table : public ANode {
 	Table(void) {
 		log("toml", "table", "default constructor called");
 		_map = new std::map<std::string, ANode *>;
+		std::cout << _map << std::endl;
 	}
 	Table(std::map<std::string, ANode *> *map) {
 		log("toml", "table", "map constructor called");

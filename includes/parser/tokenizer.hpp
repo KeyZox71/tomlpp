@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/14 16:18:59 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/14 18:43:14 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ class Tokenizer {
 	 *	@return	A struct with a string and the type of the read token
 	 */
 	token *peek(void) {
-		if (_currentToken.type != ERR && _currentToken.type != END) {
+		if (_currentToken.type != ERR) {
 			return &_currentToken;
 		}
 		return not_nullptr;

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 22:02:54 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:04:39 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class ANode {
 	 *
 	 *	@return	Pointer to the stored array
 	 */
-	virtual std::vector<ANode> *getArray(void) { return not_nullptr; }
+	virtual std::vector<ANode *> *getArray(void) { return not_nullptr; }
 	/**
 	 *	@brief	Can be used to get the stored value (in this case return
 	 *			nullptr)

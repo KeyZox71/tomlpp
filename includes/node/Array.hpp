@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/07 15:13:07 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:27:26 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,36 @@ namespace toml {
  */
 class Array : public ANode {
   public:
-	Array(void) {
-		log("toml", "array", "default constructor called");
-		
-	}
-	Array(std::vector<ANode> *vec) {
+	Array(void) { log("toml", "array", "default constructor called"); }
+	Array(std::vector<ANode *> *vec) {
 		log("toml", "array", "constructor called");
 		_vec = vec;
 	}
-	~Array(void) { log("toml", "array", "destructor called"); }
+	~Array(void) {
+		//for (std::vector<ANode *>::iterator it = _vec->begin(); it != _vec->end(); it++) {
+			//delete *it.base();
+		//}
+		log("toml", "array", "destructor called");
+	}
 
 	/**
 	 *	@brief	Can be used to get the stored array
 	 *
 	 *	@return	Pointer to the stored array
 	 */
-	std::vector<ANode> *getArray(void) { return _vec; }
+	std::vector<ANode *> *getArray(void) { return _vec; }
 	/**
 	 *	@brief	Can be used to get the type of the stored value(in this case
 	 *ARRAY)
 	 */
 	nodeType type(void) const { return ARRAY; }
 
-	void	push_back(ANode val) {
-		_vec->push_back(val);
-	}
+	void push_back(ANode *val) {
+		_vec->push_back(val); }
 
   protected:
   private:
-	std::vector<ANode> *_vec; ///< vector of the stored array
+	std::vector<ANode *> *_vec; ///< vector of the stored array
 };
 
 } // namespace toml

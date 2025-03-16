@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/14 18:43:14 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 17:56:48 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,16 +157,16 @@ class Tokenizer {
 
 			switch (c) {
 			case '{':
-				_currentToken = (token){"", TABLE_START};
-				return;
-			case '}':
-				_currentToken = (token){"", TABLE_END};
-				return;
-			case '[':
 				_currentToken = (token){"", ARRAY_START};
 				return;
-			case ']':
+			case '}':
 				_currentToken = (token){"", ARRAY_END};
+				return;
+			case '[':
+				_currentToken = (token){"", TABLE_START};
+				return;
+			case ']':
+				_currentToken = (token){"", TABLE_END};
 				return;
 			case '=':
 				_currentToken = (token){"", ASSIGNMENT_OPERATOR};

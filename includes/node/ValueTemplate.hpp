@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/14 18:14:02 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 11:25:31 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace toml {
  */
 template <typename valueType> class Value : public ANode {
   public:
-	Value(valueType val) : _val(&val) {
+	Value(valueType *val) : _val(val) {
 		log("toml", "value", "constructor called");
 		if (IsSame<valueType, bool>::value)
 			_type = BOOL;
@@ -37,7 +37,10 @@ template <typename valueType> class Value : public ANode {
 		else
 			_type = NONE;
 	}
-	~Value(void) { log("toml", "value", "destructor called"); }
+	~Value(void) { 
+		log("toml", "value", "destructor called");
+		delete _val;
+	}
 
 	/**
 	 *	@brief	Can be used to get the value stored

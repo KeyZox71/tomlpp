@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   default.hpp                                        :+:      :+:    :+:   */
+/*   tomlpp.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/13 21:13:43 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 17:50:17 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,14 @@ class Toml {
 		_tokenizer = new tokenizer::Tokenizer(s);
 		_parser = new parser::Parser(*_tokenizer);
 		_ast = _parser->parse();
+		delete _tokenizer;
 	}
 	
+	~Toml(void) {
+		log("toml", "Toml", "destructor called");
+
+		delete _parser;
+	}
 	/**
 	 *	@brief	function that can be used to get the parsed file
 	 *

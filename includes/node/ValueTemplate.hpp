@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:07:19 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/16 11:25:31 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 19:09:30 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,18 @@ template <typename valueType> class Value : public ANode {
 	 *	@return The type of the stored value
 	 */
 	nodeType type(void) const { return _type; }
+
+	ANode	*clone(void) {
+		if (_type == BOOL)
+			return new Value<bool>(new valueType(*_val));
+		else if (_type == STRING)
+			return new Value<std::string>(new valueType(*_val));
+		else if (_type == INT)
+			return new Value<int32_t>(new valueType(*_val));
+		else
+			return not_nullptr;
+
+	}
 
   protected:
 	valueType *_val;  ///< The stored value

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/16 18:25:11 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/16 19:16:46 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,9 +328,8 @@ class Parser {
 				delete keyVal.content;
 				break;
 			case ARRAY: {
-				std::vector<ANode *> *oldVec = keyVal.content->getArray();
-				(*actualTable)[keyToFind] = new Array(
-					new std::vector<ANode *>(oldVec->begin(), oldVec->end()));
+					ANode *newVec =((Array *)keyVal.content)->clone();
+				(*actualTable)[keyToFind] = newVec;
 				delete keyVal.content;
 				break;
 			}

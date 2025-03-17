@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 11:47:01 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/17 15:45:37 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,9 @@ class Parser {
 			expect(tokenizer::TABLE_END);
 			_tokenizer.next();
 			expect(tokenizer::NEWLINE);
-			_tokenizer.next();
+			while (_tokenizer.peek()->type == tokenizer::NEWLINE) {
+				_tokenizer.next();
+			}
 			parseTable(actualTable);
 		}
 		return _finalNode;
@@ -139,26 +141,31 @@ class Parser {
 		expect(tokenizer::ASSIGNMENT_OPERATOR);
 		_tokenizer.next();
 
-		switch (_tokenizer.peek()->type) {
-		case (tokenizer::BOOL):
-			kV.content = new Value<bool>(new bool(parseBool()));
-			break;
-		case (tokenizer::STRING):
-			kV.content = new Value<std::string>(
-				new std::string(_tokenizer.peek()->token));
-			break;
-		case (tokenizer::NUMBER):
-			kV.content = new Value<int32_t>(new int32_t(parseNumber()));
-			break;
-		case (tokenizer::ARRAY_START):
-			kV.content = parseArray();
-			break;
-		default:
+		try {
+			switch (_tokenizer.peek()->type) {
+			case (tokenizer::BOOL):
+				kV.content = new Value<bool>(new bool(parseBool()));
+				break;
+			case (tokenizer::STRING):
+				kV.content = new Value<std::string>(
+					new std::string(_tokenizer.peek()->token));
+				break;
+			case (tokenizer::NUMBER):
+				kV.content = new Value<int32_t>(new int32_t(parseNumber()));
+				break;
+			case (tokenizer::ARRAY_START):
+				kV.content = parseArray();
+				break;
+			default:
+				throw ParseError(
+					"Expected a value but found a " +
+					tokenizer::tokenTypetoStr(_tokenizer.peek()->type) + " : " +
+					_tokenizer.peek()->token);
+			}
+		} catch (std::runtime_error &e) {
 			delete _finalNode;
-			throw ParseError(
-				"Expected a value but found a " +
-				tokenizer::tokenTypetoStr(_tokenizer.peek()->type) + " : " +
-				_tokenizer.peek()->token);
+			std::cerr << e.what() << std::endl;
+			exit(EXIT_FAILURE);
 		}
 		return kV;
 	}
@@ -175,7 +182,9 @@ class Parser {
 			addToTable(table, kV);
 			_tokenizer.next();
 			expect(tokenizer::NEWLINE);
-			_tokenizer.next();
+			while (_tokenizer.peek()->type == tokenizer::NEWLINE) {
+				_tokenizer.next();
+			}
 		}
 		return;
 	}

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 09:58:22 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/17 21:10:59 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ class Tokenizer {
 		: _input(input), _index(0), _currentToken((token){"", ERR}) {
 		log("toml", "tokenizer", "constructor called");
 	}
-	~Tokenizer(void) {}
+	~Tokenizer(void) {
+		log("toml", "tokenizer", "destructor called");
+
+	}
 
 	/**
 	 *	@brief	Scan the _input for the next token

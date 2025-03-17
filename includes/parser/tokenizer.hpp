@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/16 17:56:48 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/17 09:58:22 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ enum tokenType {
 	ERR
 };
 
+/**
+ *	@brief	function that can be used to convert a tokenType into a string describing what it is
+ *
+ *	@note	used to print error message
+ */
 static inline std::string tokenTypetoStr(tokenType type) {
 	static std::map<tokenType, std::string> tokenTypeName;
 	if (tokenTypeName.empty()) {

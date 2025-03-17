@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/16 17:50:17 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/17 09:45:52 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ class Toml {
 	 *
 	 * @param	The name of the file that will be parsed by this class
 	 */
-	Toml(std::string fileName) : _fileName(fileName) {
-		log("toml", "Toml", "fileName constructor called");
+	Toml(std::string filePath) : _filePath(filePath) {
+		log("toml", "Toml", "filePath constructor called");
 		
-		std::ifstream input(fileName.c_str());
+		std::ifstream input(filePath.c_str());
 		std::stringstream buf;
 		std::string s;
 
@@ -64,12 +64,12 @@ class Toml {
 
   protected:
   private:
-	tokenizer::Tokenizer *_tokenizer;
-	parser::Parser		 *_parser;
+	tokenizer::Tokenizer *_tokenizer; ///> a pointer to the tokenizer class
+	parser::Parser		 *_parser; ///> a pointer to the parser class
 
-	ANode	*_ast;
+	ANode	*_ast; ///> the abstract syntax tree
 
-	std::string	_fileName;
+	std::string	_filePath; ///> the filepath that will be parsed
 };
 
 } // namespace toml

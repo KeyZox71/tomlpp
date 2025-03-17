@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/16 19:16:46 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/17 09:56:44 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ class ParseError : public std::runtime_error {
 		: std::runtime_error("Parse error: " + message) {}
 };
 
+/**
+ *	@brief	struc that can be used to store a pair key value
+ */
 struct keyValue {
 	std::string key;
 	ANode	   *content;

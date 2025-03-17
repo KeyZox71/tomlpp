@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 09:56:44 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/17 11:47:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 #include "node/ValueTemplate.hpp"
 #include "node/default.hpp"
 #include "parser/tokenizer.hpp"
+#include <cmath>
 #include <cstdlib>
 #include <node/default.hpp>
 #include <sstream>
-#include <stdexcept>
 #include <string>
-#include <vector>
 
 namespace toml {
 namespace parser {
@@ -95,7 +94,8 @@ class Parser {
 	 */
 	ANode *parse(void) {
 		std::string actualTable = "";
-		if (_tokenizer.peek()->type == tokenizer::KEY) {
+		if (_tokenizer.peek()->type == tokenizer::KEY ||
+			_tokenizer.peek()->type == tokenizer::NUMBER) {
 			parseTable(actualTable);
 		}
 		while (_tokenizer.peek()->type != tokenizer::END) {
@@ -124,7 +124,14 @@ class Parser {
 	 *	@return	A pointer to the newly allocted Value (new Value<type>())
 	 */
 	keyValue parseKeyValue(void) {
-		expect(tokenizer::KEY);
+		try {
+			std::vector<tokenizer::tokenType> expectedTypes;
+			expectedTypes.push_back(tokenizer::NUMBER);
+			expectedTypes.push_back(tokenizer::KEY);
+			multiExpect(expectedTypes);
+		} catch (const ParseError &e) {
+			std::cerr << e.what() << std::endl;
+		}
 		keyValue kV;
 		kV.key = _tokenizer.peek()->token;
 		_tokenizer.next();
@@ -331,7 +338,7 @@ class Parser {
 				delete keyVal.content;
 				break;
 			case ARRAY: {
-					ANode *newVec =((Array *)keyVal.content)->clone();
+				ANode *newVec = ((Array *)keyVal.content)->clone();
 				(*actualTable)[keyToFind] = newVec;
 				delete keyVal.content;
 				break;
@@ -358,6 +365,44 @@ class Parser {
 		throw ParseError("Expected a " + tokenizer::tokenTypetoStr(expected) +
 						 " but got a " +
 						 tokenizer::tokenTypetoStr(_tokenizer.peek()->type));
+	}
+
+	/**
+	 *	@brief	Check if the current token is one of the expected type
+	 *
+	 *	@param	a vector of the expected tokens
+	 */
+	void multiExpect(std::vector<tokenizer::tokenType> expected) {
+		if (expected.size() == 1) {
+			if (_tokenizer.peek()->type == *expected.begin()) {
+				delete _finalNode;
+				throw ParseError(
+					"Expected a " +
+					tokenizer::tokenTypetoStr(*expected.begin()) +
+					" but got a " +
+					tokenizer::tokenTypetoStr(_tokenizer.peek()->type));
+			}
+		} else {
+			for (std::vector<tokenizer::tokenType>::iterator it =
+					 expected.begin();
+				 it != expected.end(); it++) {
+				if (_tokenizer.peek()->type == *it) {
+					return;
+				}
+			}
+		}
+		std::ostringstream oss;
+		oss << "Expected one of the following tokens: ";
+		for (size_t i = 0; i < expected.size(); ++i) {
+			oss << tokenizer::tokenTypetoStr(expected[i]);
+			if (i < expected.size() - 1) {
+				oss << ", ";
+			}
+		}
+		delete _finalNode;
+		oss << " but got a "
+			<< tokenizer::tokenTypetoStr(_tokenizer.peek()->type);
+		throw ParseError(oss.str());
 	}
 };
 

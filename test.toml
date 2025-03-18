@@ -12,7 +12,7 @@ index = "index.html"
 [server.errorPage]
 401 = "unauthorized.html"
 402 = "uwu.html"
-404 = 
+404 = "asdf"
 
 [server.cgi]
 py = "/usr/bin/python3"

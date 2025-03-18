@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 11:39:37 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:33:18 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "parser/parser.hpp"
 #include "parser/tokenizer.hpp"
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 namespace toml {
@@ -44,7 +45,19 @@ class Toml {
 		s = buf.str();
 		_tokenizer = new tokenizer::Tokenizer(s);
 		_parser = new parser::Parser(*_tokenizer);
-		_ast = _parser->parse();
+	}
+
+	void parse(void) {
+		try {
+			_ast = _parser->parse();
+		} catch (parser::ParseError &e) {
+			delete _tokenizer;
+			//delete _parser;
+			throw e;
+		} catch (tokenizer::TokenizerError &e) {
+			delete _tokenizer;
+			throw e;
+		}
 		delete _tokenizer;
 	}
 	

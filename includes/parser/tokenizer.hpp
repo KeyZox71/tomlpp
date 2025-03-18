@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 21:10:59 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:16:06 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 
 namespace toml {
 namespace tokenizer {
+
+class TokenizerError : public std::runtime_error {
+  public:
+	explicit TokenizerError(const std::string &message)
+		: std::runtime_error("Token error: " + message) {}
+};
 
 /**
  * @brief	Enum for specifying the token type
@@ -45,7 +51,8 @@ enum tokenType {
 };
 
 /**
- *	@brief	function that can be used to convert a tokenType into a string describing what it is
+ *	@brief	function that can be used to convert a tokenType into a string
+ *describing what it is
  *
  *	@note	used to print error message
  */
@@ -94,10 +101,7 @@ class Tokenizer {
 		: _input(input), _index(0), _currentToken((token){"", ERR}) {
 		log("toml", "tokenizer", "constructor called");
 	}
-	~Tokenizer(void) {
-		log("toml", "tokenizer", "destructor called");
-
-	}
+	~Tokenizer(void) { log("toml", "tokenizer", "destructor called"); }
 
 	/**
 	 *	@brief	Scan the _input for the next token
@@ -139,7 +143,7 @@ class Tokenizer {
 					_index++;
 				}
 				if (_index == _input.size())
-					tokenizerError("unexpected token in string : " +
+					TokenizerError("unexpected token in string : " +
 								   std::string(_input[_index], 1));
 				_index++;
 				_currentToken = (token){
@@ -186,7 +190,7 @@ class Tokenizer {
 				_currentToken = (token){"", COMMA};
 				return;
 			default:
-				tokenizerError("unrecognized token : " + std::string(1, c));
+				throw TokenizerError("unrecognized token : " + std::string(1, c));
 			}
 		}
 		_currentToken = (token){"", END};
@@ -209,13 +213,6 @@ class Tokenizer {
 	std::string _input;		   ///< The file input in plain text
 	size_t		_index;		   ///< The index which we are in the file
 	token		_currentToken; ///< The last read token
-
-	/**
-	 *	@brief	Internal function used to throw error in the tokenizer
-	 */
-	void tokenizerError(std::string e) {
-		throw std::runtime_error("Token error - " + e);
-	}
 };
 
 } // namespace tokenizer

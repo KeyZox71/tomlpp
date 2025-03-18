@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 21:10:18 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:30:45 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static inline std::vector<std::string> *splitKey(std::string key) {
 class Parser {
   public:
 	Parser(tokenizer::Tokenizer &tokenizer) : _tokenizer(tokenizer) {
-		_tokenizer.next();
+		nextToken();
 		_finalNode = new Table();
 		log("toml", "parser", "constructor called");
 	}
@@ -100,15 +100,15 @@ class Parser {
 		}
 		while (_tokenizer.peek()->type != tokenizer::END) {
 			expect(tokenizer::TABLE_START);
-			_tokenizer.next();
+			nextToken();
 			expect(tokenizer::KEY);
 			actualTable = _tokenizer.peek()->token;
-			_tokenizer.next();
+			nextToken();
 			expect(tokenizer::TABLE_END);
-			_tokenizer.next();
+			nextToken();
 			expect(tokenizer::NEWLINE);
 			while (_tokenizer.peek()->type == tokenizer::NEWLINE) {
-				_tokenizer.next();
+				nextToken();
 			}
 			parseTable(actualTable);
 		}
@@ -133,10 +133,10 @@ class Parser {
 
 		keyValue kV;
 		kV.key = _tokenizer.peek()->token;
-		_tokenizer.next();
+		nextToken();
 
 		expect(tokenizer::ASSIGNMENT_OPERATOR);
-		_tokenizer.next();
+		nextToken();
 
 		switch (_tokenizer.peek()->type) {
 		case (tokenizer::BOOL):
@@ -153,7 +153,6 @@ class Parser {
 			kV.content = parseArray();
 			break;
 		default:
-			delete _tokenizer;
 			delete _finalNode;
 			throw ParseError(
 				"Expected a value but found a " +
@@ -172,10 +171,10 @@ class Parser {
 			   _tokenizer.peek()->type != tokenizer::TABLE_START) {
 			keyValue kV = parseKeyValue();
 			addToTable(table, kV);
-			_tokenizer.next();
+			nextToken();
 			expect(tokenizer::NEWLINE);
 			while (_tokenizer.peek()->type == tokenizer::NEWLINE) {
-				_tokenizer.next();
+				nextToken();
 			}
 		}
 		return;
@@ -189,7 +188,7 @@ class Parser {
 		std::vector<ANode *> *array;
 
 		expect(tokenizer::ARRAY_START);
-		_tokenizer.next();
+		nextToken();
 		array = new std::vector<ANode *>;
 		while (_tokenizer.peek()->type != tokenizer::END &&
 			   _tokenizer.peek()->type != tokenizer::ARRAY_END) {
@@ -216,19 +215,24 @@ class Parser {
 						tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
 						" = " + _tokenizer.peek()->token);
 				};
-			} catch (std::runtime_error &e) {
+			} catch (ParseError &e) {
 				throw e;
 			}
-			_tokenizer.next();
+			try {
+				nextToken();
+			} catch (tokenizer::TokenizerError &e) {
+				delete array;
+				throw e;
+			}
 			if (_tokenizer.peek()->type == tokenizer::ARRAY_END)
 				break;
 			try {
 				expect(tokenizer::COMMA);
+				nextToken();
 			} catch (std::runtime_error &e) {
 				delete array;
 				throw e;
 			}
-			_tokenizer.next();
 		}
 		if (_tokenizer.peek()->type == tokenizer::ARRAY_END) {
 			return new Array(array);
@@ -404,6 +408,15 @@ class Parser {
 		oss << " but got a "
 			<< tokenizer::tokenTypetoStr(_tokenizer.peek()->type);
 		throw ParseError(oss.str());
+	}
+
+	void nextToken(void) {
+		try {
+			_tokenizer.next();
+		} catch (tokenizer::TokenizerError &e) {
+			delete _finalNode;
+			throw e;
+		}
 	}
 };
 

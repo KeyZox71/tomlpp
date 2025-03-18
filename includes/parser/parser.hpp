@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/18 16:30:45 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:44:08 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,6 +410,10 @@ class Parser {
 		throw ParseError(oss.str());
 	}
 
+	/**
+	 *	@brief	Internal function used to throw cleanly an error on tokenizer
+	 *			error
+	 */
 	void nextToken(void) {
 		try {
 			_tokenizer.next();

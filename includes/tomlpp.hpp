@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/18 16:44:13 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:46:36 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ class Toml {
 			_ast = _parser->parse();
 		} catch (parser::ParseError &e) {
 			delete _tokenizer;
-			// delete _parser;
 			throw e;
 		} catch (tokenizer::TokenizerError &e) {
 			delete _tokenizer;

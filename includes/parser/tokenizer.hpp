@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/18 16:16:06 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:41:44 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ class Tokenizer {
 					_index++;
 				}
 				if (_index == _input.size())
-					TokenizerError("unexpected token in string : " +
+					throw TokenizerError("unexpected token in string : " +
 								   std::string(_input[_index], 1));
 				_index++;
 				_currentToken = (token){
@@ -190,7 +190,8 @@ class Tokenizer {
 				_currentToken = (token){"", COMMA};
 				return;
 			default:
-				throw TokenizerError("unrecognized token : " + std::string(1, c));
+				throw TokenizerError("unrecognized token : " +
+									 std::string(1, c));
 			}
 		}
 		_currentToken = (token){"", END};

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/18 16:41:44 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/19 14:58:52 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ class Tokenizer {
 				}
 				if (_index == _input.size())
 					throw TokenizerError("unexpected token in string : " +
-								   std::string(_input[_index], 1));
+										 std::string(_input[_index], 1));
 				_index++;
 				_currentToken = (token){
 					_input.substr(strStart, _index - strStart - 1), STRING};
@@ -154,7 +154,8 @@ class Tokenizer {
 			if (isalpha(c)) {
 				size_t keyStart = _index - 1;
 				while (_index < _input.size() &&
-					   (isalpha(_input[_index]) || _input[_index] == '.')) {
+					   (isalpha(_input[_index]) || _input[_index] == '.' ||
+						_input[_index] == '/' || _input[_index] == '_')) {
 					_index++;
 				}
 				std::string endValue =

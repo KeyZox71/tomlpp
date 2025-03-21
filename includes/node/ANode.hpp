@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/17 11:38:51 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/21 19:55:34 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ class Table;
 class Array;
 template <typename type> class Value;
 
+class ValueError : public std::runtime_error {
+  public:
+	explicit ValueError(const std::string &message)
+		: std::runtime_error("Value error: " + message) {}
+};
+
 /**
  *	@brief	An abstract class from which depends all other type (table, array
  *			and value)
@@ -44,7 +50,9 @@ class ANode {
 	 *
 	 *	@return Pointer to the stored table
 	 */
-	virtual std::map<std::string, ANode *> *getTable(void) { return not_nullptr; }
+	virtual std::map<std::string, ANode *> *getTable(void) {
+		return not_nullptr;
+	}
 	/**
 	 *	@brief	Can be used to get the stored array (in this case return
 	 *			nullptr)
@@ -67,9 +75,20 @@ class ANode {
 	 */
 	virtual nodeType type(void) const { return NONE; }
 
-	virtual ~ANode(void) {
-		log("toml", "ANode", "destructor called");
-	}
+	virtual ~ANode(void) { log("toml", "ANode", "destructor called"); }
+
+	/**
+	 *	@brief	Can be used to get a value in a table of a specific type (or
+	 *			return not_nullptr)
+	 *
+	 *	@param	The name of the value to get in the table
+	 *	@param	The type of the value to get
+	 *
+	 *	@return	Return not_nullptr if not apply cable or return the value (throw
+	 *			an ValueError if the value does not exist of if it is not the
+	 *			good type)
+	 */
+	virtual void *access(std::string, nodeType) { return not_nullptr; }
 };
 
 } // namespace toml

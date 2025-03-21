@@ -6,14 +6,16 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/16 11:24:32 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/21 19:51:02 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "Log.hpp"
+#include "cppeleven.hpp"
 #include "default.hpp"
+#include "node/ANode.hpp"
 #include <map>
 
 namespace toml {
@@ -55,6 +57,31 @@ class Table : public ANode {
 	 *	@return Always returns TABLE
 	 */
 	nodeType type(void) const { return TABLE; }
+
+	/**
+	 *	@brief	Can be used to get a value in a table of a specific type (or
+	 *			return not_nullptr)
+	 *
+	 *	@param	The name of the value to get in the table
+	 *	@param	The type of the value to get
+	 *
+	 *	@return	Return not_nullptr if not apply cable or return the value (throw
+	 *			an ValueError if the value does not exist of if it is not the good type)
+	 */
+	void *access(std::string what, nodeType type) {
+		std::map<std::string, ANode *>::iterator valIt = _map->find(what);
+		if (valIt != _map->end()) {
+			valIt = _map->begin();
+			if (valIt->second->type() == type) {
+				return valIt->second->getValue();
+			} else {
+				throw ValueError("value = " + what + ", is not a " +
+								 nodeTypeToStr(type));
+			}
+		} else {
+			throw ValueError("value = " + what + ", not found");
+		}
+	}
 
   protected:
   private:

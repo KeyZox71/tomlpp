@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/21 19:51:02 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/21 20:30:58 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "cppeleven.hpp"
 #include "default.hpp"
 #include "node/ANode.hpp"
+#include <functional>
 #include <map>
 
 namespace toml {
@@ -65,21 +66,26 @@ class Table : public ANode {
 	 *	@param	The name of the value to get in the table
 	 *	@param	The type of the value to get
 	 *
-	 *	@return	Return not_nullptr if not apply cable or return the value (throw
-	 *			an ValueError if the value does not exist of if it is not the good type)
+	 *	@return	Return not_nullptr if not apply cable or return the value
 	 */
-	void *access(std::string what, nodeType type) {
+	void *access(std::string what, nodeType type, bool &found) {
 		std::map<std::string, ANode *>::iterator valIt = _map->find(what);
 		if (valIt != _map->end()) {
 			valIt = _map->begin();
+			found = true;
 			if (valIt->second->type() == type) {
-				return valIt->second->getValue();
+				if (type == toml::TABLE)
+					return valIt->second->getTable();
+				if (type == toml::ARRAY)
+					return valIt->second->getArray();
+				else
+					return valIt->second->getValue();
 			} else {
-				throw ValueError("value = " + what + ", is not a " +
-								 nodeTypeToStr(type));
+				return not_nullptr;
 			}
 		} else {
-			throw ValueError("value = " + what + ", not found");
+			found = false;
+			return not_nullptr;
 		}
 	}
 

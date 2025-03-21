@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/21 19:55:34 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/21 20:31:10 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ class ANode {
 	 *
 	 *	@param	The name of the value to get in the table
 	 *	@param	The type of the value to get
+	 *	@param	An error boolean that tell you if the value was found or not
 	 *
-	 *	@return	Return not_nullptr if not apply cable or return the value (throw
-	 *			an ValueError if the value does not exist of if it is not the
-	 *			good type)
+	 *	@return	Return not_nullptr if not apply cable or return the value
 	 */
-	virtual void *access(std::string, nodeType) { return not_nullptr; }
+	virtual void *access(std::string, nodeType, bool &found) {
+		found = false;
+		return not_nullptr;
+	}
 };
 
 } // namespace toml

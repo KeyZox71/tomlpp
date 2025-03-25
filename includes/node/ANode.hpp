@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 18:33:58 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/21 20:31:10 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/25 13:44:31 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,23 @@ class ANode {
 	virtual void *access(std::string, nodeType, bool &found) {
 		found = false;
 		return not_nullptr;
+	}
+
+	/**
+	 *	@brief	Can be used to get a iterator in a table of a specific type (or
+	 *			return not_nullptr)
+	 *
+	 *	@param	The name of the value to get in the table
+	 *	@param	The type of the value to get
+	 *	@param	An error boolean that tell you if the value was found or not
+	 *
+	 *	@return	Return not_nullptr if not apply cable or return an iterator to
+	 *			the node
+	 */
+	virtual std::map<std::string, ANode *>::iterator
+	accessIt(std::string, nodeType, bool &found) {
+		found = false;
+		return std::map<std::string, ANode *>::iterator();
 	}
 };
 

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 15:42:10 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/21 20:30:58 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/03/25 13:41:03 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ class Table : public ANode {
 	void *access(std::string what, nodeType type, bool &found) {
 		std::map<std::string, ANode *>::iterator valIt = _map->find(what);
 		if (valIt != _map->end()) {
-			valIt = _map->begin();
 			found = true;
 			if (valIt->second->type() == type) {
 				if (type == toml::TABLE)
@@ -86,6 +85,33 @@ class Table : public ANode {
 		} else {
 			found = false;
 			return not_nullptr;
+		}
+	}
+
+	/**
+	 *	@brief	Can be used to get a iterator in a table of a specific type (or
+	 *			return not_nullptr)
+	 *
+	 *	@param	The name of the value to get in the table
+	 *	@param	The type of the value to get
+	 *	@param	An error boolean that tell you if the value was found or not
+	 *
+	 *	@return	Return not_nullptr if not apply cable or return an iterator to
+	 *			the node
+	 */
+	std::map<std::string, ANode *>::iterator accessIt(std::string what, nodeType type,
+													   bool &found) {
+		std::map<std::string, ANode *>::iterator it = _map->find(what);
+		if (it != _map->end()) {
+			found = true;
+			if (it->second->type() == type) {
+				return it;
+			} else {
+				return _map->end();
+			}
+		} else {
+			found = false;
+			return _map->end();
 		}
 	}
 

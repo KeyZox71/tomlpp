@@ -6,7 +6,7 @@
 #    By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 16:09:27 by adjoly            #+#    #+#              #
-#    Updated: 2025/03/14 17:53:23 by adjoly           ###   ########.fr        #
+#    Updated: 2025/04/11 15:13:59 by adjoly           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,8 @@ PURPLE = \e[0;35m
 NC = \033[0m
 DELETE = \x1B[2K\r
 
-ifeq ($(VERBOSE),true)
-	CXXFLAGS += -D VERBOSE
+ifeq ($(TOML_VERBOSE),true)
+	CXXFLAGS += -D TOML_VERBOSE
 endif
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 08:19:14 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/12 09:16:21 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/04/22 11:43:11 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ template <typename T> struct IsSame<T, T> {
 };
 
 #if __cplusplus == 199711L
+
+#define auto __auto_type
+
+#ifndef range
+#define range(x) x.begin(); it != x.end(); it++
+#endif
+#ifndef prange
+#define prange(x) x->begin(); it != x->end(); it++
+#endif
 
 #undef nullptr
 

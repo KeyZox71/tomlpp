@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/18 16:44:08 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/06/23 20:33:35 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ class ParseError : public std::runtime_error {
  */
 struct keyValue {
 	std::string key;
-	ANode	   *content;
+	ANode *		content;
 };
 
 /**
@@ -93,24 +93,29 @@ class Parser {
 	 *	@return	A pointer to the main table in the AST
 	 */
 	ANode *parse(void) {
-		std::string actualTable = "";
-		if (_tokenizer.peek()->type == tokenizer::KEY ||
-			_tokenizer.peek()->type == tokenizer::NUMBER) {
-			parseTable(actualTable);
-		}
-		while (_tokenizer.peek()->type != tokenizer::END) {
-			expect(tokenizer::TABLE_START);
-			nextToken();
-			expect(tokenizer::KEY);
-			actualTable = _tokenizer.peek()->token;
-			nextToken();
-			expect(tokenizer::TABLE_END);
-			nextToken();
-			expect(tokenizer::NEWLINE);
-			while (_tokenizer.peek()->type == tokenizer::NEWLINE) {
-				nextToken();
+		try {
+			std::string actualTable = "";
+			if (_tokenizer.peek()->type == tokenizer::KEY ||
+					_tokenizer.peek()->type == tokenizer::NUMBER) {
+				parseTable(actualTable);
 			}
-			parseTable(actualTable);
+			while (_tokenizer.peek()->type != tokenizer::END) {
+				expect(tokenizer::TABLE_START);
+				nextToken();
+				expect(tokenizer::KEY);
+				actualTable = _tokenizer.peek()->token;
+				nextToken();
+				expect(tokenizer::TABLE_END);
+				nextToken();
+				expect(tokenizer::NEWLINE);
+				while (_tokenizer.peek()->type == tokenizer::NEWLINE) {
+					nextToken();
+				}
+				parseTable(actualTable);
+			}
+		} catch (std::exception &e) {
+			// delete _finalNode;
+			throw e;
 		}
 		return _finalNode;
 	}
@@ -118,7 +123,7 @@ class Parser {
   protected:
   private:
 	tokenizer::Tokenizer _tokenizer; ///> the tokenizer class
-	ANode				*_finalNode; ///> the final table that will be returned
+	ANode *				 _finalNode; ///> the final table that will be returned
 
 	/**
 	 *	@brief	Used to parse a key-value pair
@@ -209,18 +214,28 @@ class Parser {
 						new Value<int32_t>(new int32_t(parseNumber())));
 					break;
 				default:
-					delete array;
 					throw ParseError(
 						"Expected a value but found a " +
 						tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
 						" = " + _tokenizer.peek()->token);
 				};
 			} catch (ParseError &e) {
+				if (!array->empty()) {
+					for (std::vector<ANode *>::iterator it = array->begin();
+						 it != array->end(); it++)
+						delete *it;
+				}
+				delete array;
 				throw e;
 			}
 			try {
 				nextToken();
 			} catch (tokenizer::TokenizerError &e) {
+				if (!array->empty()) {
+					for (std::vector<ANode *>::iterator it = array->begin();
+						 it != array->end(); it++)
+						delete *it;
+				}
 				delete array;
 				throw e;
 			}
@@ -230,12 +245,22 @@ class Parser {
 				expect(tokenizer::COMMA);
 				nextToken();
 			} catch (std::runtime_error &e) {
+				if (!array->empty()) {
+					for (std::vector<ANode *>::iterator it = array->begin();
+						 it != array->end(); it++)
+						delete *it;
+				}
 				delete array;
 				throw e;
 			}
 		}
 		if (_tokenizer.peek()->type == tokenizer::ARRAY_END) {
 			return new Array(array);
+		}
+		if (!array->empty()) {
+			for (std::vector<ANode *>::iterator it = array->begin();
+				 it != array->end(); it++)
+				delete *it;
 		}
 		delete array;
 		delete _finalNode;
@@ -300,7 +325,7 @@ class Parser {
 			delete valKey;
 		}
 
-		std::map<std::string, ANode *>	  *actualTable = _finalNode->getTable();
+		std::map<std::string, ANode *> *   actualTable = _finalNode->getTable();
 		std::vector<std::string>::iterator it = tableKey->begin();
 		std::string						   keyToFind = *it;
 

@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/06/23 20:33:35 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/06/23 21:07:23 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ class Parser {
 				parseTable(actualTable);
 			}
 		} catch (std::exception &e) {
-			// delete _finalNode;
+			delete _finalNode;
 			throw e;
 		}
 		return _finalNode;
@@ -443,7 +443,7 @@ class Parser {
 		try {
 			_tokenizer.next();
 		} catch (tokenizer::TokenizerError &e) {
-			delete _finalNode;
+			// delete _finalNode;
 			throw e;
 		}
 	}

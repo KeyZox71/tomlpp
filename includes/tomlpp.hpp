@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/07/11 17:33:29 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/11 17:39:07 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,17 @@ class Toml {
 		} catch (parser::ParseError &e) {
 			delete _parser;
 			delete _tokenizer;
+			_parser = not_nullptr;
 			throw e;
 		} catch (tokenizer::TokenizerError &e) {
 			delete _parser;
 			delete _tokenizer;
+			_parser = not_nullptr;
 			throw e;
 		} catch (std::exception &e) {
 			// delete _parser;
 			delete _tokenizer;
+			_parser = not_nullptr;
 			throw e;
 		}
 		delete _tokenizer;
@@ -73,7 +76,8 @@ class Toml {
 	~Toml(void) {
 		log("toml", "Toml", "destructor called");
 
-		delete _parser;
+		if (_parser != not_nullptr)
+			delete _parser;
 	}
 	/**
 	 *	@brief	function that can be used to get the parsed file

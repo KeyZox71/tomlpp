@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/06/23 21:07:23 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/11 17:33:01 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ class Parser {
 		try {
 			std::string actualTable = "";
 			if (_tokenizer.peek()->type == tokenizer::KEY ||
-					_tokenizer.peek()->type == tokenizer::NUMBER) {
+				_tokenizer.peek()->type == tokenizer::NUMBER) {
 				parseTable(actualTable);
 			}
 			while (_tokenizer.peek()->type != tokenizer::END) {
@@ -113,8 +113,12 @@ class Parser {
 				}
 				parseTable(actualTable);
 			}
+		} catch (parser::ParseError &e) {
+			// delete _finalNode;
+			throw e;
+		} catch (tokenizer::TokenizerError &e) {
+			throw e;
 		} catch (std::exception &e) {
-			delete _finalNode;
 			throw e;
 		}
 		return _finalNode;

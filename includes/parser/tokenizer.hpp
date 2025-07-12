@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 17:31:55 by adjoly            #+#    #+#             */
-/*   Updated: 2025/03/19 14:58:52 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/12 21:44:52 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 namespace toml {
 namespace tokenizer {
 
+/**
+ *	@brief	Internal function used for throwing error if something can't be
+ *			tokenized
+ */
 class TokenizerError : public std::runtime_error {
   public:
 	explicit TokenizerError(const std::string &message)

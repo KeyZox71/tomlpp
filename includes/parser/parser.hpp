@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/07/12 21:15:03 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/12 21:57:48 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <node/default.hpp>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 namespace toml {
@@ -113,12 +114,10 @@ class Parser {
 				}
 				parseTable(actualTable);
 			}
-		} catch (parser::ParseError &e) {
+		} catch (const ParseError &e) {
 			throw e;
-		} catch (tokenizer::TokenizerError &e) {
+		} catch (const tokenizer::TokenizerError &e) {
 			delete _finalNode;
-			throw e;
-		} catch (std::exception &e) {
 			throw e;
 		}
 		return _finalNode;
@@ -218,12 +217,13 @@ class Parser {
 						new Value<int32_t>(new int32_t(parseNumber())));
 					break;
 				default:
+					// delete _finalNode;
 					throw ParseError(
 						"Expected a value but found a " +
 						tokenizer::tokenTypetoStr(_tokenizer.peek()->type) +
 						" = " + _tokenizer.peek()->token);
 				};
-			} catch (ParseError &e) {
+			} catch (const ParseError &e) {
 				if (!array->empty()) {
 					for (std::vector<ANode *>::iterator it = array->begin();
 						 it != array->end(); it++)
@@ -234,7 +234,7 @@ class Parser {
 			}
 			try {
 				nextToken();
-			} catch (tokenizer::TokenizerError &e) {
+			} catch (const tokenizer::TokenizerError &e) {
 				if (!array->empty()) {
 					for (std::vector<ANode *>::iterator it = array->begin();
 						 it != array->end(); it++)
@@ -248,7 +248,7 @@ class Parser {
 			try {
 				expect(tokenizer::COMMA);
 				nextToken();
-			} catch (std::runtime_error &e) {
+			} catch (const ParseError &e) {
 				if (!array->empty()) {
 					for (std::vector<ANode *>::iterator it = array->begin();
 						 it != array->end(); it++)
@@ -301,13 +301,14 @@ class Parser {
 					" should be atoi compliant");
 			else
 				return nb;
-		} catch (std::runtime_error &e) {
+		} catch (const std::exception &e) {
 			throw e;
 		}
 	}
 
 	/**
-	 *	@brief	Can be used to insert a keyValue a specific place in the table
+	 *	@brief	Can be used to insert a keyValue a specific place in the
+	 *table
 	 *
 	 *	@param	The location of the newly added keyvalue
 	 *	@param	The keyValue to add
@@ -440,13 +441,13 @@ class Parser {
 	}
 
 	/**
-	 *	@brief	Internal function used to throw cleanly an error on tokenizer
-	 *			error
+	 *	@brief	Internal function used to throw cleanly an error on
+	 *tokenizer error
 	 */
 	void nextToken(void) {
 		try {
 			_tokenizer.next();
-		} catch (tokenizer::TokenizerError &e) {
+		} catch (const tokenizer::TokenizerError &e) {
 			// delete _finalNode;
 			throw e;
 		}

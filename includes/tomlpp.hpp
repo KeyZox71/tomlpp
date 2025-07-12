@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/07/11 17:39:07 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/12 21:57:10 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ class Toml {
 			delete _tokenizer;
 			_parser = not_nullptr;
 			throw e;
-		} catch (std::exception &e) {
-			// delete _parser;
-			delete _tokenizer;
-			_parser = not_nullptr;
-			throw e;
+		// } catch (const std::exception &e) {
+		// 	delete _parser;
+		// 	delete _tokenizer;
+		// 	_parser = not_nullptr;
+		// 	throw e;
 		}
 		delete _tokenizer;
 	}

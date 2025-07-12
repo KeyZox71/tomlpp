@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/07/12 21:57:48 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/12 21:58:50 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ class Parser {
 					" should be atoi compliant");
 			else
 				return nb;
-		} catch (const std::exception &e) {
+		} catch (const ParseError&e) {
 			throw e;
 		}
 	}

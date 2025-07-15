@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:46:42 by adjoly            #+#    #+#             */
-/*   Updated: 2025/07/12 21:58:50 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/15 20:50:19 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ class Parser {
 						delete *it;
 				}
 				delete array;
+				delete _finalNode;
 				throw e;
 			}
 			try {

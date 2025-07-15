@@ -6,7 +6,7 @@
 /*   By: adjoly <adjoly@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:57:22 by adjoly            #+#    #+#             */
-/*   Updated: 2025/07/12 21:57:10 by adjoly           ###   ########.fr       */
+/*   Updated: 2025/07/15 20:50:28 by adjoly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,6 @@ class Toml {
 			delete _tokenizer;
 			_parser = not_nullptr;
 			throw e;
-		// } catch (const std::exception &e) {
-		// 	delete _parser;
-		// 	delete _tokenizer;
-		// 	_parser = not_nullptr;
-		// 	throw e;
 		}
 		delete _tokenizer;
 	}
@@ -89,7 +84,7 @@ class Toml {
   protected:
   private:
 	tokenizer::Tokenizer *_tokenizer; ///> a pointer to the tokenizer class
-	parser::Parser		 *_parser;	  ///> a pointer to the parser class
+	parser::Parser *	  _parser;	  ///> a pointer to the parser class
 
 	ANode *_ast; ///> the abstract syntax tree
 
